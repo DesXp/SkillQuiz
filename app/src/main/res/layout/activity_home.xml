@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:background="#F4F6FA">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="22dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SKILLQUIZ"
+            android:textSize="14sp"
+            android:letterSpacing="0.12"
+            android:textStyle="bold"
+            android:textColor="#2956A3" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Menú principal"
+            android:textSize="29sp"
+            android:textStyle="bold"
+            android:textColor="#183153"
+            android:layout_marginTop="6dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="22dp"
+            android:background="@drawable/fondo_banner"
+            android:layout_marginTop="28dp">
+
+            <TextView
+                android:id="@+id/txtBienvenida"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="¡Hola, estudiante!"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pon a prueba tus conocimientos de informática."
+                android:textSize="15sp"
+                android:textColor="#E3ECFA"
+                android:layout_marginTop="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="10 preguntas por partida"
+                android:textSize="13sp"
+                android:textColor="#D3E3FF"
+                android:layout_marginTop="18dp" />
+
+            <Button
+                android:id="@+id/btnJugar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comenzar cuestionario  →"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#183153"
+                android:backgroundTint="#FFFFFF"
+                android:layout_marginTop="20dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Explora SkillQuiz"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#183153"
+            android:layout_marginTop="32dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:background="@drawable/fondo_tarjeta"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🏆  Ranking"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:textColor="#183153" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Consulta los mejores puntajes obtenidos."
+                android:textSize="14sp"
+                android:textColor="#64748B"
+                android:layout_marginTop="8dp" />
+
+            <Button
+                android:id="@+id/btnRanking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ver ranking"
+                android:textAllCaps="false"
+                android:backgroundTint="#E5ECF8"
+                android:textColor="#183153"
+                android:layout_marginTop="14dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:background="@drawable/fondo_tarjeta"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="📊  Mi progreso"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:textColor="#183153" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Revisa tu último resultado y sigue mejorando."
+                android:textSize="14sp"
+                android:textColor="#64748B"
+                android:layout_marginTop="8dp" />
+
+            <Button
+                android:id="@+id/btnMejorar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ver mi progreso"
+                android:textAllCaps="false"
+                android:backgroundTint="#E5ECF8"
+                android:textColor="#183153"
+                android:layout_marginTop="14dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnCerrarSesion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cerrar sesión"
+            android:textAllCaps="false"
+            android:textColor="#64748B"
+            android:backgroundTint="#E8EDF4"
+            android:layout_marginTop="30dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SkillQuiz | Proyecto académico"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="#94A3B8"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp" />
+
+    </LinearLayout>
+</ScrollView>
