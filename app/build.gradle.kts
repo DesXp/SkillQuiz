@@ -21,20 +21,18 @@ val localUrl = localProps.getProperty("SKILLQUIZ_LOCAL_URL")
 
 android {
     namespace = "pe.edu.cibertec.skillquiznuevo"
-    compileSdk {
-        version = release(37)
-    }
+    compileSdk = 34
 
     buildFeatures {
         buildConfig = true
     }
 
     defaultConfig {
-        buildConfigField("String", "CLOUD_API_URL", "\"" + cloudUrl + "\"")
-        buildConfigField("String", "LOCAL_API_URL", "\"" + localUrl + "\"")
+        buildConfigField("String", "CLOUD_API_URL", "\"$cloudUrl\"")
+        buildConfigField("String", "LOCAL_API_URL", "\"$localUrl\"")
         applicationId = "pe.edu.cibertec.skillquiznuevo"
         minSdk = 24
-        targetSdk = 37
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -43,12 +41,14 @@ android {
 
     buildTypes {
         release {
-            optimization {
-                enable = true
-                packageScope = setOf("androidx.**", "kotlin.**", "kotlinx.**")
-            }
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -62,7 +62,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.recyclerview)
     implementation(libs.material)
-    
+
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
