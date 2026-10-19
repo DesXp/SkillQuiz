@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="18dp"
+    android:background="@drawable/fondo_tarjeta"
+    android:layout_marginBottom="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/txtNumeroPartida"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Partida 1"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="#183153" />
+
+        <TextView
+            android:id="@+id/txtBadgeSincronizado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SQLite"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:textColor="#0369A1"
+            android:background="#E0F2FE"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="3dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtDetallePartida"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="8/10 correctas • 80%"
+        android:textSize="15sp"
+        android:textColor="#64748B"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:id="@+id/txtPuntajeAcumulado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total acumulado: 80 puntos"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="#2956A3"
+        android:layout_marginTop="4dp" />
+
+</LinearLayout>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="16dp"
+    android:background="@drawable/fondo_tarjeta"
+    android:layout_marginBottom="10dp">
+
+    <TextView
+        android:id="@+id/txtPosicionEstudiante"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:gravity="center"
+        android:text="#1"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#B45309"
+        android:background="#FEF3C7" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="14dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/txtNombreEstudiante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estudiante"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#183153" />
+
+            <TextView
+                android:id="@+id/txtBadgeTu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tú"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="#15803D"
+                android:background="#DCFCE7"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp"
+                android:layout_marginStart="8dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtDetalleEstudiante"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10/10 aciertos"
+            android:textSize="13sp"
+            android:textColor="#64748B"
+            android:layout_marginTop="3dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/txtPuntajeEstudiante"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100 pts"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#2956A3" />
+
+        <TextView
+            android:id="@+id/txtPorcentajeEstudiante"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100%"
+            android:textSize="12sp"
+            android:textColor="#15803D"
+            android:textStyle="bold"
+            android:layout_marginTop="2dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
