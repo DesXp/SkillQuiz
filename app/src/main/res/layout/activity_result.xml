@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:background="#F4F6FA">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SKILLQUIZ"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.12"
+            android:textColor="#2956A3" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mis resultados"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#183153"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="★"
+            android:textColor="#D99C31"
+            android:textSize="44sp"
+            android:layout_marginTop="12dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¡Cuestionario terminado!"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#183153"
+            android:gravity="center"
+            android:layout_marginTop="6dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Este es el resultado de tu partida."
+            android:textSize="13sp"
+            android:textColor="#64748B"
+            android:gravity="center"
+            android:layout_marginTop="4dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp"
+            android:background="@drawable/fondo_tarjeta"
+            android:layout_marginTop="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TU PUNTUACIÓN"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.08"
+                android:textColor="#64748B" />
+
+            <TextView
+                android:id="@+id/txtPuntaje"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 / 10"
+                android:textSize="38sp"
+                android:textStyle="bold"
+                android:textColor="#2956A3"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/txtPorcentaje"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0%"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#183153"
+                android:layout_marginTop="4dp" />
+
+            <ProgressBar
+                android:id="@+id/barraResultado"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:max="100"
+                android:progress="0"
+                android:progressTint="#2956A3"
+                android:progressBackgroundTint="#DFE7F3"
+                android:layout_marginTop="14dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/txtCorrectas"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Correctas: 0"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#238276"
+                    android:gravity="center" />
+
+                <TextView
+                    android:id="@+id/txtIncorrectas"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Incorrectas: 0"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#C45B50"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtMensaje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¡Sigue practicando!"
+            android:textSize="15sp"
+            android:textColor="#334155"
+            android:gravity="center"
+            android:layout_marginTop="14dp" />
+
+        <Button
+            android:id="@+id/btnRevisarRespuestas"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Revisar mis respuestas"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#183153"
+            android:backgroundTint="#DCE8F8"
+            android:layout_marginTop="14dp" />
+
+        <Button
+            android:id="@+id/btnReintentar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Volver a jugar"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#2956A3"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/btnVolverHome"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Volver al inicio"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:textColor="#183153"
+            android:backgroundTint="#E4EBF5"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp" />
+
+    </LinearLayout>
+</ScrollView>
