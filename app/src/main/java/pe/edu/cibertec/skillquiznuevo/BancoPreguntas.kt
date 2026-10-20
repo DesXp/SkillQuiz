@@ -4,7 +4,8 @@ package pe.edu.cibertec.skillquiznuevo
 data class Pregunta(
     val texto: String,
     val opciones: List<String>,
-    val correcta: Int
+    val correcta: Int,
+    val explicacion: String? = null
 )
 
 object BancoPreguntas {
@@ -98,66 +99,6 @@ object BancoPreguntas {
             listOf("Advanced Program Internet", "Application Programming Interface", "Android Process Installation", "Access Private Information"), 1),
 
         Pregunta("¿Qué es JSON?",
-            listOf("Un procesador", "Un tipo de cable", "Un formato para intercambio de datos", "Un sistema operativo"), 2),
-
-        Pregunta("¿Cuál es una característica de Java?",
-            listOf("Es un formato de imagen", "Es un protocolo", "Es un tipo de memoria", "Es un lenguaje orientado a objetos"), 3),
-
-        Pregunta("¿Qué estructura permite repetir instrucciones?",
-            listOf("Bucle", "Variable", "Constante", "Comentario"), 0),
-
-        Pregunta("¿Qué estructura permite tomar decisiones?",
-            listOf("Import", "if", "package", "class"), 1),
-
-        Pregunta("¿Qué almacena un valor en programación?",
-            listOf("Un comentario", "Un paquete", "Una variable", "Un compilador"), 2),
-
-        Pregunta("¿Qué es un bug?",
-            listOf("Una actualización", "Una carpeta", "Un algoritmo", "Un error en un programa"), 3),
-
-        Pregunta("¿Qué significa UI?",
-            listOf("User Interface", "Universal Internet", "User Installation", "Unified Input"), 0),
-
-        Pregunta("¿Qué significa UX?",
-            listOf("Unix Extension", "User Experience", "Universal XML", "User Execution"), 1),
-
-        Pregunta("¿Qué protocolo asigna IP automáticamente en muchas redes?",
-            listOf("HTTPS", "FTP", "DHCP", "SSH"), 2),
-
-        Pregunta("¿Qué función cumple un firewall?",
-            listOf("Imprimir archivos", "Aumentar la RAM", "Crear usuarios", "Filtrar tráfico de red"), 3),
-
-        Pregunta("¿Qué es malware?",
-            listOf("Software malicioso", "Memoria auxiliar", "Un servidor web", "Una red local"), 0),
-
-        Pregunta("¿Qué permite la autenticación de dos factores?",
-            listOf("Eliminar contraseñas", "Añadir una segunda verificación", "Aumentar el procesador", "Duplicar la memoria"), 1),
-
-        Pregunta("¿Qué es la nube informática?",
-            listOf("Un tipo de monitor", "Un cable de red", "Recursos informáticos accesibles por red", "Un antivirus"), 2),
-
-        Pregunta("¿Cuál es un servicio de computación en la nube?",
-            listOf("Paint", "Notepad", "Calculadora", "Amazon Web Services"), 3),
-
-        Pregunta("¿Qué significa USB?",
-            listOf("Universal Serial Bus", "User Security Backup", "Unified System Base", "Universal Server Block"), 0),
-
-        Pregunta("¿Qué memoria suele ser volátil?",
-            listOf("SSD", "RAM", "Disco duro", "DVD"), 1),
-
-        Pregunta("¿Qué es una copia de seguridad?",
-            listOf("Un virus", "Un navegador", "Una copia de datos para recuperarlos", "Un procesador"), 2),
-
-        Pregunta("¿Qué es una base de datos?",
-            listOf("Un monitor", "Un cable", "Un antivirus", "Una colección organizada de datos"), 3),
-
-        Pregunta("¿Cuál es una ventaja del software libre?",
-            listOf("Permite estudiar y modificar su código según la licencia", "Siempre es gratuito", "No necesita actualizaciones", "Nunca tiene errores"), 0),
-
-        Pregunta("¿Qué es una dirección MAC?",
-            listOf("Una contraseña web", "Un identificador de interfaz de red", "Un tipo de antivirus", "Un sistema operativo"), 1),
-
-        Pregunta("¿Qué significa IDE?",
-            listOf("Internal Data Engine", "Internet Device Extension", "Integrated Development Environment", "Input Digital Element"), 2)
+            listOf("Un procesador", "Un tipo de cable", "Un formato para intercambio de datos", "Un sistema operativo"), 2)
     )
 }

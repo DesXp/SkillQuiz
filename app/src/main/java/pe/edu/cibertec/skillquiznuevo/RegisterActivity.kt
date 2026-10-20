@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pe.edu.cibertec.skillquiznuevo.database.SkillQuizDbHelper
 import pe.edu.cibertec.skillquiznuevo.network.ApiClient
 import pe.edu.cibertec.skillquiznuevo.network.RegisterRequest
@@ -34,7 +35,7 @@ class RegisterActivity : AppCompatActivity() {
 
         registrar.setOnClickListener {
             val n = nombre.text.toString().trim()
-            val c = correo.text.toString().trim()
+            val c = correo.text.toString().trim().lowercase()
             val p = password.text.toString()
             val cp = confirmar.text.toString()
 
@@ -69,9 +70,35 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
                 else -> {
-                    val userId = dbHelper.insertarUsuario(n, c, p)
+                    registrar.isEnabled = false
+                    registrar.text = "Registrando..."
 
-                    if (userId > 0) {
+                    lifecycleScope.launch {
+                        var remoteUserId: Long? = null
+                        var sincronizadoNube = false
+
+                        withContext(Dispatchers.IO) {
+                            try {
+                                val req = RegisterRequest(
+                                    nombre = n,
+                                    correo = c,
+                                    password = p
+                                )
+                                when (val res = ApiClient.executeWithFallback { it.register(req) }) {
+                                    is ApiClient.FallbackResult.Success -> {
+                                        if (res.data.success) {
+                                            sincronizadoNube = true
+                                            remoteUserId = res.data.usuario?.id
+                                        }
+                                    }
+                                    is ApiClient.FallbackResult.Error -> {}
+                                }
+                            } catch (_: Exception) {}
+                        }
+
+                        val localUserId = dbHelper.insertarUsuario(n, c, p)
+                        val finalId = remoteUserId ?: localUserId
+
                         val datos = getSharedPreferences(
                             "SkillQuizDatos",
                             MODE_PRIVATE
@@ -79,35 +106,25 @@ class RegisterActivity : AppCompatActivity() {
                         datos.edit()
                             .putString("nombre", n)
                             .putString("correo", c)
-                            .putLong("usuario_id", userId)
+                            .putLong("usuario_id", finalId)
                             .apply()
 
-                        lifecycleScope.launch(Dispatchers.IO) {
-                            try {
-                                val req = RegisterRequest(
-                                    nombre = n,
-                                    correo = c,
-                                    password = p
-                                )
-                                ApiClient.executeWithFallback { it.register(req) }
-                            } catch (_: Exception) {
-                            }
+                        registrar.isEnabled = true
+                        registrar.text = "Registrarme"
+
+                        val mensajeExito = if (sincronizadoNube) {
+                            "¡Registro sincronizado en la nube! Bienvenido $n"
+                        } else {
+                            "¡Registro local exitoso! Bienvenido $n"
                         }
-
                         Toast.makeText(
-                            this,
-                            "¡Registro exitoso! Bienvenido $n",
+                            this@RegisterActivity,
+                            mensajeExito,
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        startActivity(Intent(this, HomeActivity::class.java))
+                        startActivity(Intent(this@RegisterActivity, HomeActivity::class.java))
                         finishAffinity()
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "Error al registrar usuario en la base de datos",
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
                 }
             }

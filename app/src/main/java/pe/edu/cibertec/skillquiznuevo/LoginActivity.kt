@@ -8,12 +8,14 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pe.edu.cibertec.skillquiznuevo.database.SkillQuizDbHelper
 import pe.edu.cibertec.skillquiznuevo.network.ApiClient
 import pe.edu.cibertec.skillquiznuevo.network.LoginRequest
+import pe.edu.cibertec.skillquiznuevo.network.RegisterRequest
 
 class LoginActivity : AppCompatActivity() {
 
@@ -38,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         login.setOnClickListener {
-            val c = correo.text.toString().trim()
+            val c = correo.text.toString().trim().lowercase()
             val p = password.text.toString()
 
             when {
@@ -58,6 +60,17 @@ class LoginActivity : AppCompatActivity() {
                     val usuarioLocal = dbHelper.validarCredenciales(c, p)
 
                     if (usuarioLocal != null) {
+                        // Sincronizar en segundo plano con la nube
+                        CoroutineScope(Dispatchers.IO).launch {
+                            try {
+                                val req = RegisterRequest(
+                                    nombre = usuarioLocal.nombre,
+                                    correo = usuarioLocal.correo,
+                                    password = p
+                                )
+                                ApiClient.executeWithFallback { it.register(req) }
+                            } catch (_: Exception) {}
+                        }
                         guardarSesionYContinuar(usuarioLocal.nombre, usuarioLocal.correo, usuarioLocal.id)
                     } else {
                         login.isEnabled = false

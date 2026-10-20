@@ -140,10 +140,13 @@ class ReviewActivity : AppCompatActivity() {
                 )
             )
 
+            val explicacionTexto = dato.optString("explicacion").ifEmpty {
+                ExplicacionesPreguntas.obtener(indice)
+            }
+
             tarjeta.addView(
                 crearTexto(
-                    "Explicación: " +
-                            ExplicacionesPreguntas.obtener(indice),
+                    "Explicación: $explicacionTexto",
                     14f,
                     "#64748B"
                 )

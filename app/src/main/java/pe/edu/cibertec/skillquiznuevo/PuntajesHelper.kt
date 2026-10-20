@@ -96,6 +96,28 @@ class PuntajesHelper(private val context: Context) {
         }
     }
 
+    fun sincronizarPendientes() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val pendientes = dbHelper.obtenerPartidasPendientesSincronizar()
+                for (p in pendientes) {
+                    val request = PartidaRequest(
+                        nombre = p.usuarioNombre,
+                        correo = p.correo ?: "",
+                        correctas = p.correctas,
+                        incorrectas = p.incorrectas,
+                        total = p.total,
+                        puntaje = p.puntaje
+                    )
+                    val res = ApiClient.executeWithFallback { it.sincronizarPartida(request) }
+                    if (res is ApiClient.FallbackResult.Success && res.data.success) {
+                        dbHelper.marcarPartidaComoSincronizada(p.id)
+                    }
+                }
+            } catch (_: Exception) {}
+        }
+    }
+
     fun obtenerResultados(): List<Resultado> {
         val partidasSqlite = dbHelper.obtenerPartidas()
         if (partidasSqlite.isNotEmpty()) {

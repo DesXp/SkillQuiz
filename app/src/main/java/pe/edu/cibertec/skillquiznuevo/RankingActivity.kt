@@ -95,6 +95,7 @@ class RankingActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        helper.sincronizarPendientes()
         mostrarEstadisticasGenerales()
         if (tabActual == 0) {
             mostrarPartidasLocales()

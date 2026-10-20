@@ -94,7 +94,7 @@
                         <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
-                        <span>Banco de Reactivos</span>
+                        <span>Banco de Preguntas</span>
                     </button>
                     <button onclick="switchTab('estudiantes')" id="tabBtnEstudiantes" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-200/50 transition-all flex items-center gap-1.5 whitespace-nowrap">
                         <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -211,7 +211,7 @@
                 <!-- KPI 3 -->
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
                     <div>
-                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Reactivos Validados</p>
+                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Preguntas Validadas</p>
                         <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpiPreguntas">--</h3>
                     </div>
                     <div class="mt-3 flex items-center text-xs text-slate-500">
@@ -296,11 +296,11 @@
                 </div>
             </div>
 
-            <!-- Reactivos Críticos con Mayor Tasa de Error -->
+            <!-- Preguntas Críticas con Mayor Tasa de Error -->
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                 <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <h3 class="text-sm font-semibold text-slate-900">Reactivos con Mayor Tasa de Error</h3>
+                        <h3 class="text-sm font-semibold text-slate-900">Preguntas con Mayor Tasa de Error</h3>
                         <p class="text-xs text-slate-500 mt-0.5">
                             Preguntas donde los estudiantes presentaron fallos reiterados o timeout de 30 segundos.
                         </p>
@@ -335,11 +335,11 @@
             <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h2 class="text-sm font-semibold text-slate-900">Mantenimiento de Banco de Preguntas</h2>
-                    <p class="text-xs text-slate-500 mt-0.5">Gestión de reactivos, alternativas y retroalimentación para SQLite & API REST.</p>
+                    <p class="text-xs text-slate-500 mt-0.5">Gestión de preguntas, alternativas y explicaciones para SQLite & API REST.</p>
                 </div>
                 <div class="flex items-center gap-2.5 flex-wrap">
                     <div class="relative">
-                        <input type="text" id="searchInput" oninput="filterQuestions()" placeholder="Buscar reactivo..." class="pl-8 pr-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-400 w-56">
+                        <input type="text" id="searchInput" oninput="filterQuestions()" placeholder="Buscar pregunta..." class="pl-8 pr-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-400 w-56">
                         <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
@@ -348,6 +348,13 @@
                     <select id="categoryCrudFilter" onchange="filterQuestions()" class="border border-slate-300 rounded-lg text-xs py-1.5 px-2.5 bg-slate-50 text-slate-700 focus:outline-none focus:ring-1 focus:ring-slate-400">
                         <option value="">Todas las Categorías</option>
                     </select>
+
+                    <button onclick="restaurarPreguntasPorDefecto()" class="inline-flex items-center px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 transition shadow-sm" title="Restablece las 30 preguntas institucionales por defecto">
+                        <svg class="w-3.5 h-3.5 mr-1 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Restablecer por Defecto
+                    </button>
 
                     <button onclick="openModalCreate()" class="inline-flex items-center px-3.5 py-1.5 bg-[#0F4C81] hover:bg-[#0C3D68] text-white rounded-lg text-xs font-semibold shadow-sm transition">
                         <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -361,7 +368,7 @@
             <!-- Tabla CRUD Principal -->
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                 <div class="p-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center text-xs text-slate-500">
-                    <span id="crudCountLabel" class="font-medium">Cargando reactivos...</span>
+                    <span id="crudCountLabel" class="font-medium">Cargando preguntas...</span>
                     <span>Base de datos SQLite local</span>
                 </div>
                 <div class="overflow-x-auto">
@@ -532,7 +539,7 @@
 
                     <div class="px-4 py-2 bg-slate-100/70 border-b border-slate-200 text-[11px] text-slate-600 flex justify-between items-center">
                         <span>Catálogo descargado al iniciar cuestionario en Android</span>
-                        <span id="apiGetPayloadSize" class="font-mono font-medium text-slate-700">50 reactivos</span>
+                        <span id="apiGetPayloadSize" class="font-mono font-medium text-slate-700">30 preguntas</span>
                     </div>
 
                     <div class="p-4 bg-[#0F172A] text-slate-200 flex-1 overflow-hidden">
@@ -600,7 +607,7 @@
             <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
                 <div>
                     <h3 class="font-semibold text-sm" id="modalTitle">Nueva Pregunta Académica</h3>
-                    <p class="text-xs text-slate-400">Defina el reactivo y la fundamentación didáctica.</p>
+                    <p class="text-xs text-slate-400">Defina la pregunta y la fundamentación didáctica.</p>
                 </div>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -631,7 +638,7 @@
                 </div>
 
                 <div>
-                    <label class="block font-medium text-slate-700 mb-1">Enunciado del Reactivo *</label>
+                    <label class="block font-medium text-slate-700 mb-1">Enunciado de la Pregunta *</label>
                     <textarea id="formEnunciado" required rows="2" placeholder="Ej: ¿Qué componente almacena datos temporalmente en el computador?" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-400"></textarea>
                 </div>
 
@@ -679,7 +686,7 @@
 
                 <div class="pt-3 border-t border-slate-200 flex justify-end gap-2">
                     <button type="button" onclick="closeModal()" class="px-3.5 py-1.5 border border-slate-300 rounded-lg text-slate-700 font-medium hover:bg-slate-50">Cancelar</button>
-                    <button type="submit" class="px-4 py-1.5 bg-[#0F4C81] hover:bg-[#0C3D68] text-white rounded-lg font-semibold shadow-sm transition">Guardar Reactivo</button>
+                    <button type="submit" class="px-4 py-1.5 bg-[#0F4C81] hover:bg-[#0C3D68] text-white rounded-lg font-semibold shadow-sm transition">Guardar Pregunta</button>
                 </div>
             </form>
         </div>
@@ -722,22 +729,22 @@
                 const filterSel = document.getElementById('categoryCrudFilter');
                 const formSel = document.getElementById('formCategory');
 
-                // Llenar selectores con conteo de reactivos por categoría
+                // Llenar selectores con conteo de preguntas por categoría
                 filterSel.innerHTML = `<option value="">Todas las Categorías (${questionsData.length})</option>`;
                 formSel.innerHTML = '';
                 
                 categoriesData.forEach(c => {
-                    const cantReactivos = questionsData.filter(q => q.categoria_id === c.id).length;
-                    filterSel.innerHTML += `<option value="${c.id}">${c.nombre} (${cantReactivos})</option>`;
+                    const cantPreguntas = questionsData.filter(q => q.categoria_id === c.id).length;
+                    filterSel.innerHTML += `<option value="${c.id}">${c.nombre} (${cantPreguntas})</option>`;
                     formSel.innerHTML += `<option value="${c.id}">${c.nombre}</option>`;
                 });
 
                 document.getElementById('badgeTotalCategorias').innerHTML = `<span class="w-2 h-2 rounded-full bg-blue-600"></span>${categoriesData.length} Módulos Académicos`;
-                document.getElementById('kpiCategoriasTxt').textContent = `${questionsData.length} reactivos activos en ${categoriesData.length} categorías de TI`;
+                document.getElementById('kpiCategoriasTxt').textContent = `${questionsData.length} preguntas activas en ${categoriesData.length} categorías de TI`;
 
                 renderCrudTable(questionsData);
                 document.getElementById('kpiPreguntas').textContent = questionsData.length;
-                document.getElementById('crudCountLabel').textContent = `Total: ${questionsData.length} reactivos activos en catálogo`;
+                document.getElementById('crudCountLabel').textContent = `Total: ${questionsData.length} preguntas activas en catálogo`;
 
                 // 3. Previsualización de API GET con formato de código
                 recargarJsonPreview();
@@ -775,8 +782,8 @@
 
         function recargarJsonPreview() {
             const previewObj = questionsData.slice(0, 3);
-            document.getElementById('apiGetPreview').innerHTML = formatJsonSyntax(previewObj) + `\n<span class="text-slate-500">// ... (${questionsData.length - 3} reactivos adicionales en la respuesta)</span>`;
-            document.getElementById('apiGetPayloadSize').textContent = `${questionsData.length} reactivos`;
+            document.getElementById('apiGetPreview').innerHTML = formatJsonSyntax(previewObj) + `\n<span class="text-slate-500">// ... (${questionsData.length - 3} preguntas adicionales en la respuesta)</span>`;
+            document.getElementById('apiGetPayloadSize').textContent = `${questionsData.length} preguntas`;
         }
 
         async function loadPartidas() {
@@ -1038,7 +1045,7 @@
                 tableBody.innerHTML = `<tr><td colspan="5" class="px-5 py-6 text-center text-slate-500 font-normal">
                     <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200">
                         <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        Rendimiento óptimo: 0 reactivos fallados en las evaluaciones registradas.
+                        Rendimiento óptimo: 0 preguntas falladas en las evaluaciones registradas.
                     </span>
                 </td></tr>`;
                 return;
@@ -1320,7 +1327,7 @@
             });
 
             renderCrudTable(filtered);
-            document.getElementById('crudCountLabel').textContent = `Mostrando ${filtered.length} de ${questionsData.length} reactivos`;
+            document.getElementById('crudCountLabel').textContent = `Mostrando ${filtered.length} de ${questionsData.length} preguntas`;
         }
 
         function openModalCreate() {
@@ -1413,6 +1420,23 @@
                 await loadInitialData();
             } catch (err) {
                 alert(err.message);
+            }
+        }
+
+        async function restaurarPreguntasPorDefecto() {
+            if (!confirm("¿Desea restaurar las 30 preguntas institucionales por defecto? Esto reseteará los enunciados, alternativas y explicaciones a los valores oficiales de la prueba didáctica.")) return;
+
+            try {
+                const res = await fetch('/api/preguntas/restaurar-por-defecto', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(data.mensaje || "Catálogo de 30 preguntas restaurado con éxito.");
+                    await loadInitialData();
+                } else {
+                    alert(data.error || "No se pudo restaurar el catálogo.");
+                }
+            } catch (err) {
+                alert("Error al conectar con el servidor: " + err.message);
             }
         }
 

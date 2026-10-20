@@ -1,4 +1,4 @@
-﻿package pe.edu.cibertec.skillquiznuevo.network
+package pe.edu.cibertec.skillquiznuevo.network
 
 import android.os.Build
 import android.util.Log
@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit
 object ApiClient {
 
     private val cloudClient = OkHttpClient.Builder()
-        .connectTimeout(5, TimeUnit.SECONDS)
-        .readTimeout(8, TimeUnit.SECONDS)
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
         .build()
 
     private val localClient = OkHttpClient.Builder()

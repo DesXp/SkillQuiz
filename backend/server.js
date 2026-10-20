@@ -86,16 +86,26 @@ app.post('/api/auth/register', (req, res) => {
             return res.status(400).json({ error: 'Nombre, correo y contraseña son obligatorios' });
         }
 
-        const existe = db.prepare('SELECT id FROM usuarios WHERE correo = ?').get(correo.trim());
+        const emailClean = correo.trim().toLowerCase();
+        const existe = db.prepare('SELECT id, nombre, correo, rol FROM usuarios WHERE LOWER(correo) = ?').get(emailClean);
         if (existe) {
-            return res.status(409).json({ error: 'El correo electrónico ya se encuentra registrado' });
+            return res.status(200).json({
+                success: true,
+                mensaje: 'Usuario sincronizado con éxito',
+                usuario: {
+                    id: existe.id,
+                    nombre: existe.nombre,
+                    correo: existe.correo,
+                    rol: existe.rol
+                }
+            });
         }
 
         const stmt = db.prepare(`
             INSERT INTO usuarios (nombre, correo, password, rol)
             VALUES (?, ?, ?, ?)
         `);
-        const result = stmt.run(nombre.trim(), correo.trim(), password, rol || 'estudiante');
+        const result = stmt.run(nombre.trim(), emailClean, password, rol || 'estudiante');
 
         res.status(201).json({
             success: true,
@@ -103,7 +113,7 @@ app.post('/api/auth/register', (req, res) => {
             usuario: {
                 id: Number(result.lastInsertRowid),
                 nombre: nombre.trim(),
-                correo: correo.trim(),
+                correo: emailClean,
                 rol: rol || 'estudiante'
             }
         });
@@ -276,6 +286,20 @@ app.delete('/api/preguntas/:id', (req, res) => {
     }
 });
 
+app.post('/api/preguntas/restaurar-por-defecto', (req, res) => {
+    try {
+        const total = db.restaurarPreguntasPorDefecto();
+        res.json({
+            success: true,
+            mensaje: `Catálogo restablecido con éxito a las ${total} preguntas institucionales por defecto`,
+            total
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error al restaurar las preguntas por defecto' });
+    }
+});
+
 app.get('/api/categorias', (req, res) => {
     try {
         const categorias = db.prepare('SELECT id, nombre, descripcion FROM categorias ORDER BY id ASC').all();
@@ -291,12 +315,23 @@ app.post('/api/partidas', (req, res) => {
         const { nombre, usuario_nombre, correo, correctas, incorrectas, total, puntaje } = req.body;
 
         const userName = (nombre || usuario_nombre || 'Estudiante').trim();
-        const userEmail = (correo || '').trim();
+        const userEmail = (correo || '').trim().toLowerCase();
         const c = Number(correctas !== undefined ? correctas : 0);
         const t = Number(total || 10);
         const inc = Number(incorrectas !== undefined ? incorrectas : (t - c));
         const pts = Number(puntaje !== undefined ? puntaje : (c * 10));
         const porc = t > 0 ? Math.round((c * 100) / t) : 0;
+
+        // Si el estudiante no existe en usuarios, insertarlo automáticamente para el directorio
+        if (userEmail && userEmail.includes('@')) {
+            const checkUser = db.prepare('SELECT id FROM usuarios WHERE LOWER(correo) = ?').get(userEmail);
+            if (!checkUser) {
+                db.prepare(`
+                    INSERT INTO usuarios (nombre, correo, password, rol)
+                    VALUES (?, ?, ?, ?)
+                `).run(userName, userEmail, 'alumno123', 'estudiante');
+            }
+        }
 
         const stmt = db.prepare(`
             INSERT INTO partidas (usuario_nombre, correo, puntaje, correctas, incorrectas, total_preguntas, porcentaje)

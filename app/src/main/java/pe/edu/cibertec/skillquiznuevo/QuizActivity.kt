@@ -12,12 +12,21 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import pe.edu.cibertec.skillquiznuevo.network.ApiClient
 import org.json.JSONArray
 import org.json.JSONObject
 
 class QuizActivity : AppCompatActivity() {
 
-    private val banco = BancoPreguntas.preguntas
+    companion object {
+        var bancoRemoto: List<Pregunta>? = null
+    }
+
+    private var banco: List<Pregunta> = bancoRemoto ?: BancoPreguntas.preguntas
     private val cantidad = 10
     private val tiempoMaximo = 30000L
 
@@ -65,6 +74,30 @@ class QuizActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             prepararPartida()
             historial = JSONArray()
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    val resp = ApiClient.executeWithFallback { it.getPreguntas(limite = 30) }
+                    if (resp is ApiClient.FallbackResult.Success && resp.data.isNotEmpty()) {
+                        val preguntasApi = resp.data.map { dto ->
+                            Pregunta(
+                                texto = dto.texto,
+                                opciones = dto.opciones,
+                                correcta = dto.correcta,
+                                explicacion = dto.explicacion
+                            )
+                        }
+                        bancoRemoto = preguntasApi
+                        withContext(Dispatchers.Main) {
+                            if (actual == 0 && !terminado) {
+                                banco = preguntasApi
+                                prepararPartida()
+                                mostrarPregunta()
+                            }
+                        }
+                    }
+                } catch (_: Exception) {}
+            }
         } else {
             indices = savedInstanceState.getIntArray(
                 "indices"
@@ -296,6 +329,7 @@ class QuizActivity : AppCompatActivity() {
             )
             put("correcta", esCorrecta)
             put("indicePregunta", indices[actual])
+            put("explicacion", dato.explicacion ?: ExplicacionesPreguntas.obtener(indices[actual]))
         }
 
         historial.put(registro)

@@ -6,12 +6,51 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import pe.edu.cibertec.skillquiznuevo.network.ApiClient
+import pe.edu.cibertec.skillquiznuevo.network.RegisterRequest
 
 class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        // Sincronización en segundo plano: preguntas, perfil del estudiante y partidas pendientes
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                // 1. Pre-cargar preguntas desde la API de Render para inicio instantáneo
+                val resp = ApiClient.executeWithFallback { it.getPreguntas(limite = 30) }
+                if (resp is ApiClient.FallbackResult.Success && resp.data.isNotEmpty()) {
+                    QuizActivity.bancoRemoto = resp.data.map { dto ->
+                        Pregunta(
+                            texto = dto.texto,
+                            opciones = dto.opciones,
+                            correcta = dto.correcta,
+                            explicacion = dto.explicacion
+                        )
+                    }
+                }
+
+                // 2. Sincronizar automáticamente el usuario local en Render si no estaba sincronizado
+                val prefs = getSharedPreferences("SkillQuizDatos", MODE_PRIVATE)
+                val usuarioCorreo = prefs.getString("correo", null)
+                val usuarioNombre = prefs.getString("nombre", null)
+                if (!usuarioCorreo.isNullOrBlank() && !usuarioNombre.isNullOrBlank()) {
+                    val syncReq = RegisterRequest(
+                        nombre = usuarioNombre,
+                        correo = usuarioCorreo,
+                        password = "auto_sync_account"
+                    )
+                    ApiClient.executeWithFallback { it.register(syncReq) }
+                }
+
+                // 3. Sincronizar partidas pendientes de SQLite a Render
+                PuntajesHelper(this@HomeActivity).sincronizarPendientes()
+            } catch (_: Exception) {}
+        }
 
         val bienvenida = findViewById<TextView>(
             R.id.txtBienvenida

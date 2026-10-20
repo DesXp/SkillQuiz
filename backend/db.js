@@ -84,9 +84,9 @@ function initDatabase() {
         catMap[row.nombre] = row.id;
     }
 
-    const countPreguntas = db.prepare('SELECT COUNT(*) as count FROM preguntas').get();
-    if (countPreguntas.count === 0) {
-        const banco = [
+}
+
+const BANCO_PREGUNTAS_DEFAULT = [
             {
                 texto: '¿Qué significa CPU?',
                 opciones: ['Unidad Central de Procesamiento', 'Control de Programas', 'Centro de Usuarios', 'Unidad de Pantalla'],
@@ -326,191 +326,52 @@ function initDatabase() {
                 categoria: 'Programación y Algoritmos',
                 explicacion: 'JSON (JavaScript Object Notation) es un formato de texto ligero, estructurado y universalmente usado en APIs web.',
                 dificultad: 'Básica'
-            },
-            {
-                texto: '¿Cuál es una característica de Java?',
-                opciones: ['Es un formato de imagen', 'Es un protocolo', 'Es un tipo de memoria', 'Es un lenguaje orientado a objetos'],
-                correcta: 3,
-                categoria: 'Programación y Algoritmos',
-                explicacion: 'Java es un lenguaje fuertemente tipado basado en clases y orientado a objetos, ejecutable en la JVM.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Qué estructura permite repetir instrucciones?',
-                opciones: ['Bucle', 'Variable', 'Constante', 'Comentario'],
-                correcta: 0,
-                categoria: 'Programación y Algoritmos',
-                explicacion: 'Los bucles (como for, while y do-while) repiten bloques de código mientras se cumpla una condición determinada.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Qué estructura permite tomar decisiones?',
-                opciones: ['Import', 'if', 'package', 'class'],
-                correcta: 1,
-                categoria: 'Programación y Algoritmos',
-                explicacion: 'La estructura if evalúa una condición booleana para ejecutar un flujo u otro en el programa.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Qué almacena un valor en programación?',
-                opciones: ['Un comentario', 'Un paquete', 'Una variable', 'Un compilador'],
-                correcta: 2,
-                categoria: 'Programación y Algoritmos',
-                explicacion: 'Una variable es un espacio de memoria con un nombre simbólico que almacena un valor modificable.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Qué es un bug?',
-                opciones: ['Una actualización', 'Una carpeta', 'Un algoritmo', 'Un error en un programa'],
-                correcta: 3,
-                categoria: 'Programación y Algoritmos',
-                explicacion: 'En informática, un bug es un error o defecto en el código que produce un resultado incorrecto o inesperado.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Qué significa UI?',
-                opciones: ['User Interface', 'Universal Internet', 'User Installation', 'Unified Input'],
-                correcta: 0,
-                categoria: 'Sistemas y Software',
-                explicacion: 'UI (Interfaz de Usuario) comprende todos los elementos visuales e interactivos con los que una persona interactúa en una app.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Qué significa UX?',
-                opciones: ['Unix Extension', 'User Experience', 'Universal XML', 'User Execution'],
-                correcta: 1,
-                categoria: 'Sistemas y Software',
-                explicacion: 'UX (Experiencia de Usuario) se enfoca en cómo se siente y cuán intuitiva y satisfactoria resulta la interacción del usuario.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Qué protocolo asigna IP automáticamente en muchas redes?',
-                opciones: ['HTTPS', 'FTP', 'DHCP', 'SSH'],
-                correcta: 2,
-                categoria: 'Redes y Conectividad',
-                explicacion: 'DHCP (Dynamic Host Configuration Protocol) asigna dinámicamente direcciones IP y parámetros de red a los clientes.',
-                dificultad: 'Media'
-            },
-            {
-                texto: '¿Qué función cumple un firewall?',
-                opciones: ['Imprimir archivos', 'Aumentar la RAM', 'Crear usuarios', 'Filtrar tráfico de red'],
-                correcta: 3,
-                categoria: 'Seguridad Informática',
-                explicacion: 'Un firewall inspecciona y filtra el tráfico de red entrante y saliente según políticas de seguridad predefinidas.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Qué es malware?',
-                opciones: ['Software malicioso', 'Memoria auxiliar', 'Un servidor web', 'Una red local'],
-                correcta: 0,
-                categoria: 'Seguridad Informática',
-                explicacion: 'Malware engloba a todo software diseñado para dañar, infiltrarse o causar un mal funcionamiento en sistemas informáticos.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Qué permite la autenticación de dos factores?',
-                opciones: ['Eliminar contraseñas', 'Añadir una segunda verificación', 'Aumentar el procesador', 'Duplicar la memoria'],
-                correcta: 1,
-                categoria: 'Seguridad Informática',
-                explicacion: 'La autenticación de doble factor (2FA) exige dos pruebas de identidad distintas antes de conceder acceso al sistema.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Qué es la nube informática?',
-                opciones: ['Un tipo de monitor', 'Un cable de red', 'Recursos informáticos accesibles por red', 'Un antivirus'],
-                correcta: 2,
-                categoria: 'Sistemas y Software',
-                explicacion: 'Cloud computing es la entrega bajo demanda de servidores, almacenamiento, bases de datos y software a través de Internet.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Cuál es un servicio de computación en la nube?',
-                opciones: ['Paint', 'Notepad', 'Calculadora', 'Amazon Web Services'],
-                correcta: 3,
-                categoria: 'Sistemas y Software',
-                explicacion: 'Amazon Web Services (AWS) es una de las plataformas de infraestructura cloud más grandes y extendidas del mundo.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Qué significa USB?',
-                opciones: ['Universal Serial Bus', 'User Security Backup', 'Unified System Base', 'Universal Server Block'],
-                correcta: 0,
-                categoria: 'Hardware',
-                explicacion: 'USB (Bus Universal en Serie) es el estándar de conexión física e intercambio de datos entre periféricos y computadoras.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Qué memoria suele ser volátil?',
-                opciones: ['SSD', 'RAM', 'Disco duro', 'DVD'],
-                correcta: 1,
-                categoria: 'Hardware',
-                explicacion: 'La memoria RAM pierde su contenido inmediatamente al apagarse o interrumpirse la energía eléctrica.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Qué es una copia de seguridad?',
-                opciones: ['Un virus', 'Un navegador', 'Una copia de datos para recuperarlos', 'Un procesador'],
-                correcta: 2,
-                categoria: 'Seguridad Informática',
-                explicacion: 'Un backup es un respaldo de la información que permite restaurarla ante incidentes, fallos de disco o pérdidas de datos.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Qué es una base de datos?',
-                opciones: ['Un monitor', 'Un cable', 'Un antivirus', 'Una colección organizada de datos'],
-                correcta: 3,
-                categoria: 'Bases de Datos',
-                explicacion: 'Una base de datos es un conjunto de información estructurada y organizada electrónicamente en un sistema informático.',
-                dificultad: 'Básica'
-            },
-            {
-                texto: '¿Cuál es una ventaja del software libre?',
-                opciones: ['Permite estudiar y modificar su código según la licencia', 'Siempre es gratuito', 'No necesita actualizaciones', 'Nunca tiene errores'],
-                correcta: 0,
-                categoria: 'Sistemas y Software',
-                explicacion: 'El software libre garantiza las libertades de ejecutar, estudiar, modificar y redistribuir el código respetando su licencia.',
-                dificultad: 'Media'
-            },
-            {
-                texto: '¿Qué es una dirección MAC?',
-                opciones: ['Una contraseña web', 'Un identificador de interfaz de red', 'Un tipo de antivirus', 'Un sistema operativo'],
-                correcta: 1,
-                categoria: 'Redes y Conectividad',
-                explicacion: 'La dirección MAC es un identificador único de 48 bits asignado por el fabricante a cada tarjeta de red física (capa de enlace).',
-                dificultad: 'Media'
-            },
-            {
-                texto: '¿Qué significa IDE?',
-                opciones: ['Internal Data Engine', 'Internet Device Extension', 'Integrated Development Environment', 'Input Digital Element'],
-                correcta: 2,
-                categoria: 'Programación y Algoritmos',
-                explicacion: 'Un IDE (Entorno de Desarrollo Integrado) reúne editor de código, depurador y compilador en una misma suite de trabajo.',
-                dificultad: 'Básica'
             }
         ];
 
-        const insertPregunta = db.prepare(`
-            INSERT INTO preguntas (categoria_id, texto, opcion_a, opcion_b, opcion_c, opcion_d, correcta, explicacion, dificultad)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `);
+function restaurarPreguntasPorDefecto() {
+    db.prepare('DELETE FROM detalle_partidas').run();
+    db.prepare('DELETE FROM preguntas').run();
+    try {
+        db.prepare("DELETE FROM sqlite_sequence WHERE name = 'preguntas'").run();
+    } catch (_) {}
 
-        for (const item of banco) {
-            const catId = catMap[item.categoria] || 1;
-            insertPregunta.run(
-                catId,
-                item.texto,
-                item.opciones[0],
-                item.opciones[1],
-                item.opciones[2],
-                item.opciones[3],
-                item.correcta,
-                item.explicacion,
-                item.dificultad
-            );
-        }
+    const catMap = {};
+    const catRows = db.prepare('SELECT id, nombre FROM categorias').all();
+    for (const row of catRows) {
+        catMap[row.nombre] = row.id;
     }
+
+    const insertPregunta = db.prepare(`
+        INSERT INTO preguntas (categoria_id, texto, opcion_a, opcion_b, opcion_c, opcion_d, correcta, explicacion, dificultad)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    for (const item of BANCO_PREGUNTAS_DEFAULT) {
+        const catId = catMap[item.categoria] || 1;
+        insertPregunta.run(
+            catId,
+            item.texto,
+            item.opciones[0],
+            item.opciones[1],
+            item.opciones[2],
+            item.opciones[3],
+            item.correcta,
+            item.explicacion,
+            item.dificultad
+        );
+    }
+
+    return BANCO_PREGUNTAS_DEFAULT.length;
 }
 
+db.restaurarPreguntasPorDefecto = restaurarPreguntasPorDefecto;
+
 initDatabase();
+
+const countPreguntas = db.prepare('SELECT COUNT(*) as count FROM preguntas').get();
+if (countPreguntas.count === 0) {
+    restaurarPreguntasPorDefecto();
+}
 
 module.exports = db;
