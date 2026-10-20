@@ -21,18 +21,20 @@ val localUrl = localProps.getProperty("SKILLQUIZ_LOCAL_URL")
 
 android {
     namespace = "pe.edu.cibertec.skillquiznuevo"
-    compileSdk = 34
+    compileSdk {
+        version = release(37)
+    }
 
     buildFeatures {
         buildConfig = true
     }
 
     defaultConfig {
-        buildConfigField("String", "CLOUD_API_URL", "\"$cloudUrl\"")
-        buildConfigField("String", "LOCAL_API_URL", "\"$localUrl\"")
+        buildConfigField("String", "CLOUD_API_URL", "\"" + cloudUrl + "\"")
+        buildConfigField("String", "LOCAL_API_URL", "\"" + localUrl + "\"")
         applicationId = "pe.edu.cibertec.skillquiznuevo"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
 
@@ -41,14 +43,12 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            optimization {
+                enable = true
+                packageScope = setOf("androidx.**", "kotlin.**", "kotlinx.**")
+            }
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -62,7 +62,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.recyclerview)
     implementation(libs.material)
-
+    
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
@@ -71,6 +71,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }

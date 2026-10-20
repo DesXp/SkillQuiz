@@ -1,6 +1,8 @@
+
 package pe.edu.cibertec.skillquiznuevo
 
 object ExplicacionesPreguntas {
+
     private val explicaciones = listOf(
         "La CPU procesa instrucciones y coordina las operaciones del equipo.",
         "La RAM almacena temporalmente los datos de los programas en ejecución.",
@@ -58,4 +60,5 @@ object ExplicacionesPreguntas {
         return explicaciones.getOrElse(indice) {
             "Repasa este concepto y vuelve a practicar."
         }
-}}
+    }
+}

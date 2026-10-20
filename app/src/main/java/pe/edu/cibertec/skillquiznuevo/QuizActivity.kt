@@ -2,7 +2,6 @@
 package pe.edu.cibertec.skillquiznuevo
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.SystemClock
@@ -15,7 +14,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import org.json.JSONArray
 import org.json.JSONObject
-import java.util.Locale
 
 class QuizActivity : AppCompatActivity() {
 
@@ -244,13 +242,13 @@ class QuizActivity : AppCompatActivity() {
                 ).toInt()
 
         txtTiempo.text = String.format(
-            Locale.getDefault(),
+            java.util.Locale.getDefault(),
             "00:%02d",
             segundos
         )
 
         txtTiempo.setTextColor(
-            Color.parseColor(
+            android.graphics.Color.parseColor(
                 if (segundos <= 10) "#C45B50" else "#2956A3"
             )
         )

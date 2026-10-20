@@ -1,59 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center">
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:background="#F4F6FA">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Control de acceso"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="32dp" />
-
-    <com.google.android.material.textfield.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="24dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etEmail"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SK"
+            android:textSize="29sp"
+            android:textStyle="bold"
+            android:textColor="#2956A3"
+            android:gravity="center"
+            android:padding="20dp"
+            android:background="@drawable/fondo_tarjeta" />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Correo electrónico"
-            android:inputType="textEmailAddress"
-            android:background="@drawable/fondo_campo" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:text="SkillQuiz"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            android:textColor="#183153"
+            android:gravity="center"
+            android:layout_marginTop="18dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPassword"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Contraseña"
-            android:inputType="textPassword"
-            android:background="@drawable/fondo_campo" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:text="Ingresa para continuar aprendiendo"
+            android:textSize="15sp"
+            android:textColor="#64748B"
+            android:gravity="center"
+            android:layout_marginTop="8dp" />
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ingresar"
-        android:layout_marginBottom="12dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="22dp"
+            android:background="@drawable/fondo_tarjeta"
+            android:layout_marginTop="32dp">
 
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Crear cuenta"
-        style="?attr/materialButtonOutlinedStyle" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Correo electrónico"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#183153" />
 
-</LinearLayout>
+            <EditText
+                android:id="@+id/etCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:hint="ejemplo@correo.com"
+                android:inputType="textEmailAddress"
+                android:singleLine="true"
+                android:textSize="15sp"
+                android:textColor="#183153"
+                android:textColorHint="#94A3B8"
+                android:padding="14dp"
+                android:background="@drawable/fondo_campo"
+                android:layout_marginTop="9dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Contraseña"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#183153"
+                android:layout_marginTop="20dp" />
+
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:hint="Ingresa tu contraseña"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:textSize="15sp"
+                android:textColor="#183153"
+                android:textColorHint="#94A3B8"
+                android:padding="14dp"
+                android:background="@drawable/fondo_campo"
+                android:layout_marginTop="9dp" />
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Iniciar sesión"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#2956A3"
+                android:layout_marginTop="26dp" />
+
+            <Button
+                android:id="@+id/btnRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:text="Crear una cuenta"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                android:textColor="#183153"
+                android:backgroundTint="#E5ECF8"
+                android:layout_marginTop="10dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SkillQuiz | Proyecto académico"
+            android:textSize="12sp"
+            android:textColor="#94A3B8"
+            android:gravity="center"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="12dp" />
+
+    </LinearLayout>
+</ScrollView>

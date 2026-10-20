@@ -1,3 +1,4 @@
+
 package pe.edu.cibertec.skillquiznuevo
 
 data class Pregunta(
@@ -5,7 +6,9 @@ data class Pregunta(
     val opciones: List<String>,
     val correcta: Int
 )
+
 object BancoPreguntas {
+
     val preguntas = listOf(
         Pregunta("¿Qué significa CPU?",
             listOf("Unidad Central de Procesamiento", "Control de Programas", "Centro de Usuarios", "Unidad de Pantalla"), 0),
