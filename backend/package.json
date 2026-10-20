@@ -1,0 +1,25 @@
+{
+  "name": "skillquiz-backend",
+  "version": "1.0.0",
+  "description": "Servidor Web, API REST y Portal Administrativo de SkillQuiz",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --experimental-sqlite server.js",
+    "dev": "node --watch --experimental-sqlite server.js"
+  },
+  "keywords": [
+    "skillquiz",
+    "api",
+    "rest",
+    "cibertec"
+  ],
+  "author": "SkillQuiz Team",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillQuiz - Portal Administrativo & Gestión Docente</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#F0F6FC',
+                            100: '#E1EDF8',
+                            200: '#C3DCF1',
+                            500: '#0F4C81',
+                            600: '#0C3D68',
+                            700: '#0A3153',
+                            800: '#082641',
+                            900: '#05192C'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            background-color: rgba(255, 255, 255, 0.98);
+        }
+        pre::-webkit-scrollbar, .overflow-x-auto::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        pre::-webkit-scrollbar-track, .overflow-x-auto::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 4px;
+        }
+        pre::-webkit-scrollbar-thumb, .overflow-x-auto::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        pre::-webkit-scrollbar-thumb:hover, .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-900">
+
+    <!-- ================= ENCABEZADO SUPERIOR PREMIUM ================= -->
+    <header class="glass-header sticky top-0 z-40 border-b border-slate-200/80 shadow-[0_1px_3px_0_rgba(0,0,0,0.05)] bg-white/95 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Marca & Identidad -->
+                <div class="flex items-center space-x-3.5">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#0F4C81] to-[#2563EB] flex items-center justify-center text-white shadow-md shadow-blue-500/15 ring-2 ring-blue-500/10">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl font-extrabold tracking-tight text-slate-900">SkillQuiz</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-blue-50 text-blue-700 border border-blue-200/80 uppercase tracking-wider">Docente</span>
+                        </div>
+                        <p class="text-xs text-slate-500 font-medium">Panel Administrativo</p>
+                    </div>
+                </div>
+
+                <!-- Tabs de Navegación Segmentada -->
+                <nav class="flex items-center space-x-1 bg-slate-100/90 backdrop-blur p-1 rounded-xl border border-slate-200/80 shadow-inner overflow-x-auto max-w-full">
+                    <button onclick="switchTab('dashboard')" id="tabBtnDashboard" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-sm bg-white text-blue-700 border border-slate-200/70 flex items-center gap-1.5 whitespace-nowrap">
+                        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        <span>Dashboard</span>
+                    </button>
+                    <button onclick="switchTab('crud')" id="tabBtnCrud" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-200/50 transition-all flex items-center gap-1.5 whitespace-nowrap">
+                        <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        <span>Banco de Reactivos</span>
+                    </button>
+                    <button onclick="switchTab('estudiantes')" id="tabBtnEstudiantes" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-200/50 transition-all flex items-center gap-1.5 whitespace-nowrap">
+                        <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <span>Alumnos Registrados</span>
+                    </button>
+                    <button onclick="switchTab('evaluaciones')" id="tabBtnEvaluaciones" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-200/50 transition-all flex items-center gap-1.5 whitespace-nowrap">
+                        <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <span>Evaluaciones Alumnos</span>
+                    </button>
+                    <button onclick="switchTab('sync')" id="tabBtnSync" class="px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-200/50 transition-all flex items-center gap-1.5 whitespace-nowrap">
+                        <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        <span>API REST Explorer</span>
+                    </button>
+                </nav>
+
+                <!-- Perfil & Acciones -->
+                <div class="flex items-center space-x-3">
+                    <div class="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-700 text-[11px] font-semibold">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>En Línea</span>
+                    </div>
+                    <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
+                    <div class="text-right hidden sm:block">
+                        <p class="text-xs font-bold text-slate-900" id="profileName">Administrador</p>
+                        <p class="text-[11px] text-slate-500 font-medium">Gestión Docente</p>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#0F4C81] to-[#1E3A8A] text-white shadow-sm flex items-center justify-center font-bold text-xs ring-2 ring-blue-500/10">
+                            AD
+                        </div>
+                        <a href="index.html" title="Cerrar sesión" class="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-200 transition" aria-label="Cerrar sesión">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= SUB-BARRA DE ESTADO & CONTROLES ================= -->
+    <section class="bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center space-x-2 text-xs text-slate-600">
+                <span class="inline-flex items-center gap-1.5 font-medium text-slate-700">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    Base de Datos SQLite Conectada
+                </span>
+                <span class="text-slate-300">•</span>
+                <span class="font-mono text-[11px] text-slate-500">http://localhost:3000/api/</span>
+            </div>
+
+            <div class="flex items-center gap-2 flex-wrap">
+                <button onclick="simularPartidaEstudiante()" class="inline-flex items-center px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-lg text-xs font-medium transition" title="Simula el registro de una partida desde la app Android">
+                    <svg class="w-3.5 h-3.5 mr-1 text-slate-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Simular Partida de Alumno
+                </button>
+                <button onclick="descargarReporteCSV()" class="inline-flex items-center px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 transition shadow-sm">
+                    <svg class="w-3.5 h-3.5 mr-1 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Exportar Reporte CSV
+                </button>
+                <button onclick="loadInitialData()" class="inline-flex items-center p-1.5 border border-slate-300 rounded-lg text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 transition shadow-sm" title="Recargar datos">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= CONTENIDO PRINCIPAL ================= -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 flex-1 w-full">
+
+        <!-- ================= TAB 1: DASHBOARD DE RENDIMIENTO ================= -->
+        <div id="viewDashboard" class="space-y-7 block">
+            
+            <!-- Fila de Tarjetas KPI -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- KPI 1 -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Partidas Sincronizadas</p>
+                        <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpiPartidas">--</h3>
+                    </div>
+                    <div class="mt-3 flex items-center text-xs text-slate-600 font-medium">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span>
+                        <span>Registros en SQLite local</span>
+                    </div>
+                </div>
+
+                <!-- KPI 2 -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Promedio de Acierto</p>
+                        <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpiPromedio">--%</h3>
+                    </div>
+                    <div class="mt-3 flex items-center text-xs text-slate-600 font-medium">
+                        <span class="w-2 h-2 rounded-full bg-blue-500 mr-1.5"></span>
+                        <span>Meta sugerida: ≥ 70%</span>
+                    </div>
+                </div>
+
+                <!-- KPI 3 -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Reactivos Validados</p>
+                        <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpiPreguntas">--</h3>
+                    </div>
+                    <div class="mt-3 flex items-center text-xs text-slate-500">
+                        <span id="kpiCategoriasTxt">Distribuidas en módulos de TI</span>
+                    </div>
+                </div>
+
+                <!-- KPI 4 -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Tasa de Aprobación</p>
+                        <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpiTasaAprobacion">0%</h3>
+                    </div>
+                    <div class="mt-3 flex items-center text-xs text-slate-500">
+                        <span>Calificación aprobatoria ≥ 60%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráficos Principales -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Gráfico 1: Barras -->
+                <div class="lg:col-span-7 bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-100 flex-wrap gap-2">
+                            <div>
+                                <h3 class="text-sm font-semibold text-slate-900">Promedio de Acierto por Módulo Académico</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Rendimiento porcentual consolidado por área técnica (0 a 100%)</p>
+                            </div>
+                            <span class="text-xs font-medium text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200 flex items-center gap-1.5" id="badgeTotalCategorias">
+                                <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                                6 Categorías
+                            </span>
+                        </div>
+
+                        <!-- Mini Leyenda Cromática de Módulos -->
+                        <div id="categoryChartLegend" class="flex flex-wrap gap-2 mt-3 pt-1">
+                            <!-- Inserción dinámica de chips -->
+                        </div>
+
+                        <div class="h-60 mt-2 relative">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-500 flex items-center justify-between flex-wrap gap-2">
+                        <span id="footerModuloDificil">Módulo con mayor dificultad: <strong class="text-slate-500 font-normal">Sin datos aún</strong></span>
+                        <span id="footerModuloOptimo">Módulo óptimo: <strong class="text-slate-500 font-normal">Sin datos aún</strong></span>
+                    </div>
+                </div>
+
+                <!-- Gráfico 2: Distribución -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                            <div>
+                                <h3 class="text-sm font-semibold text-slate-900">Distribución de Puntuaciones</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Segmentación de partidas según nivel de logro</p>
+                            </div>
+                        </div>
+                        <div class="h-56 mt-4 relative flex items-center justify-center">
+                            <canvas id="scoreDistributionChart"></canvas>
+                            <div id="doughnutCenterText" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none pb-4">
+                                <span class="text-2xl font-bold text-slate-900" id="doughnutCenterPct">--</span>
+                                <span class="text-[10px] uppercase font-semibold tracking-wider text-slate-400" id="doughnutCenterLabel">Sin datos</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center pt-3 border-t border-slate-100 text-xs">
+                        <div class="p-2 bg-slate-50 border border-slate-200 rounded-lg">
+                            <p class="font-semibold text-slate-800" id="statSobresaliente">--</p>
+                            <p class="text-slate-500 text-[11px]">Sobresaliente (≥80%)</p>
+                        </div>
+                        <div class="p-2 bg-slate-50 border border-slate-200 rounded-lg">
+                            <p class="font-semibold text-slate-800" id="statAprobado">--</p>
+                            <p class="text-slate-500 text-[11px]">Aprobado (50-79%)</p>
+                        </div>
+                        <div class="p-2 bg-slate-50 border border-slate-200 rounded-lg">
+                            <p class="font-semibold text-slate-800" id="statEnDesarrollo">--</p>
+                            <p class="text-slate-500 text-[11px]">Bajo (&lt;50%)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reactivos Críticos con Mayor Tasa de Error -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-sm font-semibold text-slate-900">Reactivos con Mayor Tasa de Error</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">
+                            Preguntas donde los estudiantes presentaron fallos reiterados o timeout de 30 segundos.
+                        </p>
+                    </div>
+                    <button onclick="descargarReporteCSV()" class="inline-flex items-center px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 shadow-sm transition">
+                        Exportar Reporte
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200 text-left text-xs">
+                        <thead class="bg-slate-50 font-medium text-slate-600">
+                            <tr>
+                                <th class="px-5 py-3">Módulo</th>
+                                <th class="px-5 py-3">Enunciado</th>
+                                <th class="px-5 py-3">Tasa de Error</th>
+                                <th class="px-5 py-3">Diagnóstico Didáctico</th>
+                                <th class="px-5 py-3 text-right">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="errorQuestionsTableBody" class="divide-y divide-slate-100 bg-white text-slate-700">
+                            <!-- Inserción dinámica -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 2: MANTENIMIENTO CRUD DE PREGUNTAS ================= -->
+        <div id="viewCrud" class="space-y-5 hidden">
+            <!-- Barra superior de gestión -->
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-sm font-semibold text-slate-900">Mantenimiento de Banco de Preguntas</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Gestión de reactivos, alternativas y retroalimentación para SQLite & API REST.</p>
+                </div>
+                <div class="flex items-center gap-2.5 flex-wrap">
+                    <div class="relative">
+                        <input type="text" id="searchInput" oninput="filterQuestions()" placeholder="Buscar reactivo..." class="pl-8 pr-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-400 w-56">
+                        <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+
+                    <select id="categoryCrudFilter" onchange="filterQuestions()" class="border border-slate-300 rounded-lg text-xs py-1.5 px-2.5 bg-slate-50 text-slate-700 focus:outline-none focus:ring-1 focus:ring-slate-400">
+                        <option value="">Todas las Categorías</option>
+                    </select>
+
+                    <button onclick="openModalCreate()" class="inline-flex items-center px-3.5 py-1.5 bg-[#0F4C81] hover:bg-[#0C3D68] text-white rounded-lg text-xs font-semibold shadow-sm transition">
+                        <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Nueva Pregunta
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabla CRUD Principal -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center text-xs text-slate-500">
+                    <span id="crudCountLabel" class="font-medium">Cargando reactivos...</span>
+                    <span>Base de datos SQLite local</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200 text-left text-xs">
+                        <thead class="bg-slate-50 font-medium text-slate-600">
+                            <tr>
+                                <th class="px-4 py-3 w-14">ID</th>
+                                <th class="px-4 py-3 w-36">Categoría</th>
+                                <th class="px-5 py-3">Enunciado & Fundamentación</th>
+                                <th class="px-5 py-3">Respuesta Correcta</th>
+                                <th class="px-3 py-3 w-24">Dificultad</th>
+                                <th class="px-4 py-3 text-right w-36">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="crudTableBody" class="divide-y divide-slate-100 bg-white text-slate-700">
+                            <!-- Rellenado dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="viewEstudiantes" class="space-y-5 hidden">
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-sm font-semibold text-slate-900">Directorio de Alumnos Registrados</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Estudiantes registrados desde la aplicación móvil o el sistema institucional.</p>
+                </div>
+                <div class="flex items-center gap-2.5">
+                    <input 
+                        type="text" 
+                        id="searchEstudiantesInput" 
+                        oninput="filterEstudiantes()" 
+                        placeholder="Buscar alumno..." 
+                        class="pl-3 pr-3 py-1.5 border border-slate-300 rounded-lg text-xs bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-400 w-52"
+                    >
+                    <button onclick="loadEstudiantes()" class="inline-flex items-center px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 shadow-sm transition">
+                        Actualizar
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <span class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Alumnos</span>
+                    <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpiTotalAlumnos">0</h3>
+                    <p class="text-[11px] text-slate-400 mt-1">Registrados en la plataforma</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <span class="text-xs font-medium text-slate-500 uppercase tracking-wider">Alumnos con Partidas</span>
+                    <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpiAlumnosActivos">0</h3>
+                    <p class="text-[11px] text-slate-400 mt-1">Con evaluaciones completadas</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <span class="text-xs font-medium text-slate-500 uppercase tracking-wider">Promedio de Aciertos</span>
+                    <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpiPromedioAlumnos">0%</h3>
+                    <p class="text-[11px] text-slate-400 mt-1">Rendimiento global del grupo</p>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <div class="px-5 py-3 border-b border-slate-200 bg-slate-50/70 flex items-center justify-between">
+                    <span id="estudiantesCountLabel" class="text-xs font-medium text-slate-700">Cargando directorio...</span>
+                    <span class="text-[11px] text-slate-400">Base de datos institucional SQLite Cloud</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200 text-left text-xs">
+                        <thead class="bg-slate-50 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
+                            <tr>
+                                <th class="px-5 py-3">Estudiante</th>
+                                <th class="px-5 py-3">Correo</th>
+                                <th class="px-5 py-3">Fecha Registro</th>
+                                <th class="px-5 py-3 text-center">Partidas</th>
+                                <th class="px-5 py-3 text-center">Mejor Puntaje</th>
+                                <th class="px-5 py-3 text-center">Promedio</th>
+                                <th class="px-5 py-3 text-right">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="estudiantesTableBody" class="divide-y divide-slate-100 bg-white text-slate-700">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 3: EVALUACIONES DE ESTUDIANTES ================= -->
+        <div id="viewEvaluaciones" class="space-y-5 hidden">
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-sm font-semibold text-slate-900">Historial de Evaluaciones de Estudiantes</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Partidas transmitidas desde la aplicación móvil mediante el servicio POST /api/partidas.</p>
+                </div>
+                <div class="flex items-center gap-2.5">
+                    <button onclick="limpiarHistorialPartidas()" class="inline-flex items-center px-3 py-1.5 border border-rose-300 hover:bg-rose-50 text-rose-700 rounded-lg text-xs font-semibold shadow-sm transition">
+                        Limpiar Historial a 0
+                    </button>
+                    <button onclick="simularPartidaEstudiante()" class="inline-flex items-center px-3 py-1.5 bg-[#0F4C81] hover:bg-[#0C3D68] text-white rounded-lg text-xs font-semibold shadow-sm transition">
+                        Registrar Partida de Prueba
+                    </button>
+                    <button onclick="descargarReporteCSV()" class="inline-flex items-center px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 transition shadow-sm">
+                        Exportar CSV
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabla de Partidas -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200 text-left text-xs">
+                        <thead class="bg-slate-50 font-medium text-slate-600">
+                            <tr>
+                                <th class="px-4 py-3 w-16">ID</th>
+                                <th class="px-5 py-3">Estudiante</th>
+                                <th class="px-4 py-3">Correo</th>
+                                <th class="px-4 py-3">Puntaje</th>
+                                <th class="px-4 py-3">Aciertos</th>
+                                <th class="px-4 py-3">Porcentaje</th>
+                                <th class="px-4 py-3">Estado Académico</th>
+                                <th class="px-4 py-3 text-slate-400">Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody id="partidasTableBody" class="divide-y divide-slate-100 bg-white text-slate-700">
+                            <!-- Inserción dinámica -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 4: API REST EXPLORER ================= -->
+        <div id="viewSync" class="space-y-6 hidden">
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-sm font-semibold text-slate-900">Consola de Servicios REST & Contratos Móviles</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Inspección de endpoints HTTP consumidos por el cliente Android con Retrofit y Gson.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="recargarJsonPreview()" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 transition shadow-sm">
+                        <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        Refrescar GET
+                    </button>
+                    <button onclick="simularPartidaEstudiante()" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0F4C81] hover:bg-[#0C3D68] text-white rounded-lg text-xs font-semibold shadow-sm transition">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                        Simular Envío POST
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dos Paneles Estilo OpenAPI / Postman -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 text-xs">
+                
+                <!-- Endpoint 1: GET /api/preguntas -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between overflow-hidden">
+                    <div class="p-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded font-mono font-bold text-[11px] bg-blue-100 text-blue-800 border border-blue-200">GET</span>
+                            <span class="font-mono text-slate-800 text-xs font-semibold">/api/preguntas</span>
+                        </div>
+                        <div class="flex items-center gap-2 font-mono">
+                            <span class="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                200 OK
+                            </span>
+                            <span class="text-slate-300">·</span>
+                            <span class="text-[11px] text-slate-500">JSON</span>
+                        </div>
+                    </div>
+
+                    <div class="px-4 py-2 bg-slate-100/70 border-b border-slate-200 text-[11px] text-slate-600 flex justify-between items-center">
+                        <span>Catálogo descargado al iniciar cuestionario en Android</span>
+                        <span id="apiGetPayloadSize" class="font-mono font-medium text-slate-700">50 reactivos</span>
+                    </div>
+
+                    <div class="p-4 bg-[#0F172A] text-slate-200 flex-1 overflow-hidden">
+                        <pre id="apiGetPreview" class="text-xs font-mono overflow-x-auto max-h-64 leading-relaxed text-slate-300 select-text"></pre>
+                    </div>
+
+                    <div class="p-3 bg-slate-50 border-t border-slate-200 text-[11px] text-slate-500 flex justify-between items-center">
+                        <span class="flex items-center gap-1.5 text-slate-600">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            SQLite: preguntas + categorias (3FN)
+                        </span>
+                        <button onclick="copiarAlPortapapeles('apiGetPreview')" class="inline-flex items-center gap-1 text-slate-700 hover:text-slate-900 font-medium bg-white hover:bg-slate-100 border border-slate-200 px-2.5 py-1 rounded text-[11px] transition shadow-xs">
+                            <svg class="w-3 h-3 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                            Copiar JSON
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Endpoint 2: POST /api/partidas -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between overflow-hidden">
+                    <div class="p-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded font-mono font-bold text-[11px] bg-emerald-100 text-emerald-800 border border-emerald-200">POST</span>
+                            <span class="font-mono text-slate-800 text-xs font-semibold">/api/partidas</span>
+                        </div>
+                        <div class="flex items-center gap-2 font-mono">
+                            <span class="inline-flex items-center gap-1 text-[11px] font-medium text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded">
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                201 Created
+                            </span>
+                            <span class="text-slate-300">·</span>
+                            <span class="text-[11px] text-slate-500">JSON</span>
+                        </div>
+                    </div>
+
+                    <div class="px-4 py-2 bg-slate-100/70 border-b border-slate-200 text-[11px] text-slate-600 flex justify-between items-center">
+                        <span>Payload transmitido por Retrofit al finalizar cuestionario</span>
+                        <span id="lastCommitTime" class="font-mono font-medium text-slate-700">Transacción confirmada</span>
+                    </div>
+
+                    <div class="p-4 bg-[#0F172A] text-slate-200 flex-1 overflow-hidden">
+                        <pre id="apiPostPreview" class="text-xs font-mono overflow-x-auto max-h-64 leading-relaxed text-slate-300 select-text"></pre>
+                    </div>
+
+                    <div class="p-3 bg-slate-50 border-t border-slate-200 text-[11px] text-slate-500 flex justify-between items-center">
+                        <span class="flex items-center gap-1.5 text-slate-600">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                            SQLite: partidas + detalle_partidas (ACID)
+                        </span>
+                        <button onclick="copiarAlPortapapeles('apiPostPreview')" class="inline-flex items-center gap-1 text-slate-700 hover:text-slate-900 font-medium bg-white hover:bg-slate-100 border border-slate-200 px-2.5 py-1 rounded text-[11px] transition shadow-xs">
+                            <svg class="w-3 h-3 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                            Copiar JSON
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ================= MODAL: FORMULARIO DE PREGUNTA ================= -->
+    <div id="questionModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-xl shadow-xl max-w-xl w-full border border-slate-200 overflow-hidden">
+            <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
+                <div>
+                    <h3 class="font-semibold text-sm" id="modalTitle">Nueva Pregunta Académica</h3>
+                    <p class="text-xs text-slate-400">Defina el reactivo y la fundamentación didáctica.</p>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <form id="questionForm" onsubmit="handleFormSubmit(event)" class="p-5 space-y-3.5 text-xs">
+                <input type="hidden" id="formQuestionId">
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">Módulo Temático *</label>
+                        <select id="formCategory" required class="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-400">
+                            <!-- Llenado dinámico -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">Alternativa Correcta *</label>
+                        <select id="formCorrectOption" required class="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-400 font-semibold text-slate-900">
+                            <option value="0">Opción A</option>
+                            <option value="1">Opción B</option>
+                            <option value="2">Opción C</option>
+                            <option value="3">Opción D</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Enunciado del Reactivo *</label>
+                    <textarea id="formEnunciado" required rows="2" placeholder="Ej: ¿Qué componente almacena datos temporalmente en el computador?" class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-400"></textarea>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block font-medium text-slate-700">Alternativas de Respuesta *</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-5 text-center font-semibold text-slate-500">A</span>
+                            <input type="text" id="formOp1" required placeholder="Opción A" class="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-400">
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-5 text-center font-semibold text-slate-500">B</span>
+                            <input type="text" id="formOp2" required placeholder="Opción B" class="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-400">
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-5 text-center font-semibold text-slate-500">C</span>
+                            <input type="text" id="formOp3" required placeholder="Opción C" class="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-400">
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-5 text-center font-semibold text-slate-500">D</span>
+                            <input type="text" id="formOp4" required placeholder="Opción D" class="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-400">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">Nivel de Dificultad</label>
+                        <select id="formDificultad" class="w-full border border-slate-300 rounded-lg px-2.5 py-1.5 bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-400">
+                            <option value="Básica">Básica</option>
+                            <option value="Media" selected>Media</option>
+                            <option value="Avanzada">Avanzada</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-700 mb-1">Área Académica</label>
+                        <input type="text" disabled value="Computación e Informática" class="w-full border border-slate-200 rounded-lg px-2.5 py-1.5 bg-slate-100 text-slate-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Fundamentación Didáctica *</label>
+                    <textarea id="formExplicacion" required rows="2" placeholder="Explique por qué la alternativa seleccionada es la respuesta correcta..." class="w-full border border-slate-300 rounded-lg px-3 py-2 bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-slate-400"></textarea>
+                </div>
+
+                <div class="pt-3 border-t border-slate-200 flex justify-end gap-2">
+                    <button type="button" onclick="closeModal()" class="px-3.5 py-1.5 border border-slate-300 rounded-lg text-slate-700 font-medium hover:bg-slate-50">Cancelar</button>
+                    <button type="submit" class="px-4 py-1.5 bg-[#0F4C81] hover:bg-[#0C3D68] text-white rounded-lg font-semibold shadow-sm transition">Guardar Reactivo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast de Notificación -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-lg shadow-xl flex items-center space-x-3 text-xs transform transition-all duration-300 translate-y-20 opacity-0 border border-slate-800">
+        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+        <span id="toastMsg">Operación completada con éxito.</span>
+    </div>
+
+    <script>
+        let questionsData = [];
+        let categoriesData = [];
+        let partidasData = [];
+        let estudiantesData = [];
+        let categoryChartInstance = null;
+        let scoreDistributionChartInstance = null;
+
+        window.onload = async function() {
+            await loadInitialData();
+        };
+
+        async function loadInitialData() {
+            try {
+                // 1. Cargar categorías
+                const resCat = await fetch('/api/categorias');
+                categoriesData = await resCat.json();
+                
+                // 2. Cargar preguntas
+                const resQ = await fetch('/api/preguntas');
+                questionsData = await resQ.json();
+
+                const filterSel = document.getElementById('categoryCrudFilter');
+                const formSel = document.getElementById('formCategory');
+
+                // Llenar selectores con conteo de reactivos por categoría
+                filterSel.innerHTML = `<option value="">Todas las Categorías (${questionsData.length})</option>`;
+                formSel.innerHTML = '';
+                
+                categoriesData.forEach(c => {
+                    const cantReactivos = questionsData.filter(q => q.categoria_id === c.id).length;
+                    filterSel.innerHTML += `<option value="${c.id}">${c.nombre} (${cantReactivos})</option>`;
+                    formSel.innerHTML += `<option value="${c.id}">${c.nombre}</option>`;
+                });
+
+                document.getElementById('badgeTotalCategorias').innerHTML = `<span class="w-2 h-2 rounded-full bg-blue-600"></span>${categoriesData.length} Módulos Académicos`;
+                document.getElementById('kpiCategoriasTxt').textContent = `${questionsData.length} reactivos activos en ${categoriesData.length} categorías de TI`;
+
+                renderCrudTable(questionsData);
+                document.getElementById('kpiPreguntas').textContent = questionsData.length;
+                document.getElementById('crudCountLabel').textContent = `Total: ${questionsData.length} reactivos activos en catálogo`;
+
+                // 3. Previsualización de API GET con formato de código
+                recargarJsonPreview();
+
+                // 4. Cargar partidas
+                await loadPartidas();
+
+                await loadEstudiantes();
+
+                // 5. Cargar métricas
+                await loadMetrics();
+
+            } catch (err) {
+                console.error("Error al cargar datos:", err);
+            }
+        }
+
+        function formatJsonSyntax(jsonObj) {
+            const raw = JSON.stringify(jsonObj, null, 2);
+            return raw.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                    let cls = 'text-amber-300'; // number
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'text-sky-300 font-medium'; // key
+                        } else {
+                            cls = 'text-emerald-300'; // string
+                        }
+                    } else if (/true|false/.test(match)) {
+                        cls = 'text-purple-300';
+                    }
+                    return '<span class="' + cls + '">' + match + '</span>';
+                });
+        }
+
+        function recargarJsonPreview() {
+            const previewObj = questionsData.slice(0, 3);
+            document.getElementById('apiGetPreview').innerHTML = formatJsonSyntax(previewObj) + `\n<span class="text-slate-500">// ... (${questionsData.length - 3} reactivos adicionales en la respuesta)</span>`;
+            document.getElementById('apiGetPayloadSize').textContent = `${questionsData.length} reactivos`;
+        }
+
+        async function loadPartidas() {
+            try {
+                const res = await fetch('/api/partidas');
+                partidasData = await res.json();
+                renderPartidasTable(partidasData);
+
+                if (partidasData.length > 0) {
+                    const aprobados = partidasData.filter(p => p.porcentaje >= 50).length;
+                    const tasa = Math.round((aprobados * 100) / partidasData.length);
+                    document.getElementById('kpiTasaAprobacion').textContent = `${tasa}%`;
+                }
+
+                // Actualizar POST preview en API Explorer
+                if (partidasData.length > 0) {
+                    const ultima = partidasData[0];
+                    document.getElementById('apiPostPreview').innerHTML = formatJsonSyntax({
+                        usuario_nombre: ultima.usuario_nombre,
+                        correo: ultima.correo,
+                        puntaje: ultima.puntaje,
+                        correctas: ultima.correctas,
+                        incorrectas: ultima.incorrectas,
+                        total_preguntas: ultima.total_preguntas,
+                        porcentaje: ultima.porcentaje,
+                        fecha: ultima.fecha
+                    });
+                }
+            } catch (err) {
+                console.error("Error al cargar partidas:", err);
+            }
+        }
+
+        // ================= SECCIÓN 2: ESTADO ACADÉMICO NATURAL =================
+        function renderPartidasTable(data) {
+            const tbody = document.getElementById('partidasTableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="px-5 py-8 text-center text-slate-400">No hay partidas registradas aún. Use el botón "Simular Partida de Alumno" para verificar.</td></tr>`;
+                return;
+            }
+
+            data.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/80 transition border-b border-slate-100";
+                
+                // Criterio de calificación académica institucional
+                let statusDot = 'bg-emerald-500';
+                let statusLabel = 'Sobresaliente';
+                let gradeScale = 'AD';
+                
+                if (p.porcentaje >= 80) {
+                    statusDot = 'bg-emerald-500';
+                    statusLabel = 'Sobresaliente';
+                    gradeScale = 'AD';
+                } else if (p.porcentaje >= 65) {
+                    statusDot = 'bg-blue-500';
+                    statusLabel = 'Aprobado';
+                    gradeScale = 'A';
+                } else if (p.porcentaje >= 50) {
+                    statusDot = 'bg-amber-500';
+                    statusLabel = 'Regular';
+                    gradeScale = 'B';
+                } else {
+                    statusDot = 'bg-rose-500';
+                    statusLabel = 'En Riesgo';
+                    gradeScale = 'C';
+                }
+
+                tr.innerHTML = `
+                    <td class="px-4 py-3 font-mono text-slate-500 text-xs">#${p.id}</td>
+                    <td class="px-5 py-3 font-medium text-slate-900">${p.usuario_nombre}</td>
+                    <td class="px-4 py-3 text-slate-500 font-mono text-[11px]">${p.correo || 'estudiante@skillquiz.edu.pe'}</td>
+                    <td class="px-4 py-3 font-semibold text-slate-900">${p.puntaje} pts</td>
+                    <td class="px-4 py-3 text-slate-600">${p.correctas} / ${p.total_preguntas}</td>
+                    <td class="px-4 py-3 font-medium text-slate-700">${p.porcentaje}%</td>
+                    <td class="px-4 py-3">
+                        <div class="inline-flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full ${statusDot} shrink-0"></span>
+                            <span class="text-xs font-medium text-slate-700">${statusLabel}</span>
+                            <span class="text-[10px] text-slate-400 font-mono">(${gradeScale})</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-3 text-slate-500 text-[11px] font-mono">${p.fecha || 'Reciente'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function loadMetrics() {
+            try {
+                const res = await fetch('/api/metricas');
+                const data = await res.json();
+
+                document.getElementById('kpiPartidas').textContent = data.kpis.totalPartidas;
+                document.getElementById('kpiPromedio').textContent = data.kpis.promedioGeneral + '%';
+                document.getElementById('statSobresaliente').textContent = data.distribucionNivel.sobresaliente;
+                document.getElementById('statAprobado').textContent = data.distribucionNivel.aprobado;
+                document.getElementById('statEnDesarrollo').textContent = data.distribucionNivel.enDesarrollo;
+
+                const totalP = data.kpis.totalPartidas;
+                const tasa = totalP > 0 ? Math.round(((data.distribucionNivel.sobresaliente + data.distribucionNivel.aprobado) * 100) / totalP) : 0;
+                document.getElementById('kpiTasaAprobacion').textContent = totalP > 0 ? `${tasa}%` : '0%';
+
+                // Actualizar pie de gráfico por categoría
+                if (totalP > 0 && Array.isArray(data.rendimientoPorCategoria) && data.rendimientoPorCategoria.length > 0) {
+                    const ordenadas = [...data.rendimientoPorCategoria].sort((a,b) => a.porcentaje - b.porcentaje);
+                    const minCat = ordenadas[0];
+                    const maxCat = ordenadas[ordenadas.length - 1];
+                    document.getElementById('footerModuloDificil').innerHTML = `Módulo con mayor dificultad: <strong class="text-amber-700 font-semibold">${minCat.categoria} (${minCat.porcentaje}%)</strong>`;
+                    document.getElementById('footerModuloOptimo').innerHTML = `Módulo óptimo: <strong class="text-blue-700 font-semibold">${maxCat.categoria} (${maxCat.porcentaje}%)</strong>`;
+                } else {
+                    document.getElementById('footerModuloDificil').innerHTML = `Módulo con mayor dificultad: <strong class="text-slate-500 font-normal">Sin datos aún</strong>`;
+                    document.getElementById('footerModuloOptimo').innerHTML = `Módulo óptimo: <strong class="text-slate-500 font-normal">Sin datos aún</strong>`;
+                }
+
+                initCharts(data.rendimientoPorCategoria, data.distribucionNivel);
+                renderDashboardErrorTable(data.preguntasMasFalladas);
+
+            } catch (err) {
+                console.error("Error al cargar métricas:", err);
+            }
+        }
+
+        // Mapeo armónico institucional de colores por categoría técnica
+        const CATEGORIA_COLORES = {
+            'Hardware': { bg: '#2563EB', light: '#EFF6FF', text: '#1D4ED8', border: '#BFDBFE', dot: '#3B82F6' },
+            'Redes y Conectividad': { bg: '#0D9488', light: '#F0FDFA', text: '#0F766E', border: '#99F6E4', dot: '#14B8A6' },
+            'Sistemas y Software': { bg: '#7C3AED', light: '#F5F3FF', text: '#6D28D9', border: '#DDD6FE', dot: '#8B5CF6' },
+            'Programación': { bg: '#EA580C', light: '#FFF7ED', text: '#C2410C', border: '#FFEDD5', dot: '#F97316' },
+            'Programación y Algoritmos': { bg: '#EA580C', light: '#FFF7ED', text: '#C2410C', border: '#FFEDD5', dot: '#F97316' },
+            'Seguridad Informática': { bg: '#E11D48', light: '#FFF1F2', text: '#BE123C', border: '#FECDD3', dot: '#F43F5E' },
+            'Bases de Datos': { bg: '#0891B2', light: '#ECFEFF', text: '#0E7490', border: '#A5F3FC', dot: '#06B6D4' }
+        };
+
+        function getCatColor(catName) {
+            return CATEGORIA_COLORES[catName] || { bg: '#0F4C81', light: '#F1F5F9', text: '#334155', border: '#E2E8F0', dot: '#64748B' };
+        }
+
+        function initCharts(catRendimiento, distribucion) {
+            const ctxCat = document.getElementById('categoryChart').getContext('2d');
+            if (categoryChartInstance) categoryChartInstance.destroy();
+
+            const labels = catRendimiento.map(c => c.categoria);
+            const values = catRendimiento.map(c => c.porcentaje);
+            const barColors = labels.map(name => getCatColor(name).bg);
+
+            // Renderizar mini-chips de leyenda de módulos
+            const legendContainer = document.getElementById('categoryChartLegend');
+            if (legendContainer) {
+                legendContainer.innerHTML = '';
+                labels.forEach((name, i) => {
+                    const c = getCatColor(name);
+                    legendContainer.innerHTML += `
+                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium" style="background-color: ${c.light}; color: ${c.text}; border: 1px solid ${c.border};">
+                            <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${c.bg};"></span>
+                            ${name}
+                            <span class="font-semibold ml-0.5">${values[i]}%</span>
+                        </span>
+                    `;
+                });
+            }
+
+            categoryChartInstance = new Chart(ctxCat, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Acierto (%)',
+                        data: values,
+                        backgroundColor: barColors,
+                        borderRadius: 6,
+                        barPercentage: 0.65
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => ` Acierto promedio: ${context.parsed.x}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            min: 0,
+                            max: 100,
+                            ticks: { callback: (val) => `${val}%`, font: { size: 10 } },
+                            grid: { color: '#F1F5F9' }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { font: { size: 11, family: 'Inter', weight: 500 } }
+                        }
+                    }
+                }
+            });
+
+            const ctxScore = document.getElementById('scoreDistributionChart').getContext('2d');
+            if (scoreDistributionChartInstance) scoreDistributionChartInstance.destroy();
+
+            scoreDistributionChartInstance = new Chart(ctxScore, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Excelente (≥80%)', 'Aprobado (50-79%)', 'En Riesgo (<50%)'],
+                    datasets: [{
+                        data: [distribucion.sobresaliente, distribucion.aprobado, distribucion.enDesarrollo],
+                        backgroundColor: [
+                            '#10B981',
+                            '#3B82F6',
+                            '#F43F5E'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { font: { size: 11, family: 'Inter' }, boxWidth: 10 } }
+                    },
+                    cutout: '72%'
+                }
+            });
+
+            // Actualizar etiqueta numérica central en la dona
+            const totalDistrib = (distribucion.sobresaliente || 0) + (distribucion.aprobado || 0) + (distribucion.enDesarrollo || 0);
+            const centerPct = document.getElementById('doughnutCenterPct');
+            const centerLabel = document.getElementById('doughnutCenterLabel');
+            if (centerPct && centerLabel) {
+                if (totalDistrib === 0) {
+                    centerPct.textContent = '0%';
+                    centerLabel.textContent = 'Sin datos';
+                    centerLabel.className = 'text-[10px] uppercase font-semibold tracking-wider text-slate-400';
+                } else if (distribucion.sobresaliente > 0 && distribucion.aprobado === 0 && distribucion.enDesarrollo === 0) {
+                    centerPct.textContent = '100%';
+                    centerLabel.textContent = 'Excelente';
+                    centerLabel.className = 'text-[10px] uppercase font-semibold tracking-wider text-emerald-600';
+                } else {
+                    const pctSobresaliente = Math.round((distribucion.sobresaliente * 100) / totalDistrib);
+                    centerPct.textContent = `${pctSobresaliente}%`;
+                    centerLabel.textContent = 'Sobresaliente';
+                    centerLabel.className = 'text-[10px] uppercase font-semibold tracking-wider text-blue-600';
+                }
+            }
+        }
+
+        function renderDashboardErrorTable(preguntas) {
+            const tableBody = document.getElementById('errorQuestionsTableBody');
+            tableBody.innerHTML = '';
+
+            if (!preguntas || preguntas.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="5" class="px-5 py-6 text-center text-slate-500 font-normal">
+                    <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200">
+                        <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Rendimiento óptimo: 0 reactivos fallados en las evaluaciones registradas.
+                    </span>
+                </td></tr>`;
+                return;
+            }
+
+            preguntas.forEach(q => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/80 transition border-b border-slate-100";
+                tr.innerHTML = `
+                    <td class="px-5 py-3.5 font-medium text-slate-800">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold" style="background-color: ${getCatColor(q.categoria).light}; color: ${getCatColor(q.categoria).text}; border: 1px solid ${getCatColor(q.categoria).border};">
+                            <span class="w-1.5 h-1.5 rounded-full shrink-0" style="background-color: ${getCatColor(q.categoria).dot};"></span>
+                            ${q.categoria}
+                        </span>
+                    </td>
+                    <td class="px-5 py-3.5 text-slate-900 max-w-xs font-normal">
+                        ${q.texto}
+                    </td>
+                    <td class="px-5 py-3.5">
+                        <span class="font-semibold text-rose-600 text-xs">${q.tasaError}%</span>
+                    </td>
+                    <td class="px-5 py-3.5 text-slate-500 max-w-sm text-xs">
+                        Reforzar en sesión de laboratorio práctico
+                    </td>
+                    <td class="px-5 py-3.5 text-right">
+                        <button onclick="buscarYEditarPorTexto('${q.texto}')" class="text-slate-700 hover:text-slate-900 font-medium underline text-xs">Calibrar</button>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        function buscarYEditarPorTexto(texto) {
+            const p = questionsData.find(item => item.texto === texto);
+            if (p) {
+                switchTab('crud');
+                editQuestionById(p.id);
+            } else {
+                switchTab('crud');
+            }
+        }
+
+        function renderCrudTable(data) {
+            const tbody = document.getElementById('crudTableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="px-5 py-8 text-center text-slate-400">No se encontraron preguntas con los filtros seleccionados.</td></tr>`;
+                return;
+            }
+
+            data.forEach(q => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/80 transition border-b border-slate-100";
+                const opcionCorrectaTexto = q.opciones[q.correcta] || 'Opción válida';
+                const catColor = getCatColor(q.categoria);
+
+                let difDot = 'bg-emerald-500';
+                if (q.dificultad === 'Media') difDot = 'bg-blue-500';
+                if (q.dificultad === 'Avanzada') difDot = 'bg-amber-500';
+
+                tr.innerHTML = `
+                    <td class="px-4 py-3 font-mono text-slate-500 text-xs">#${q.id}</td>
+                    <td class="px-4 py-3">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold" style="background-color: ${catColor.light}; color: ${catColor.text}; border: 1px solid ${catColor.border};">
+                            <span class="w-1.5 h-1.5 rounded-full shrink-0" style="background-color: ${catColor.dot};"></span>
+                            ${q.categoria}
+                        </span>
+                    </td>
+                    <td class="px-5 py-3 max-w-md">
+                        <div class="font-medium text-slate-900 leading-snug">${q.texto}</div>
+                        <div class="text-[11px] text-slate-500 mt-1 leading-normal font-normal">${q.explicacion}</div>
+                    </td>
+                    <td class="px-5 py-3">
+                        <!-- Alternativa limpia y natural: Letra sutil + texto normal + icono discreto -->
+                        <div class="flex items-center gap-2 max-w-xs">
+                            <span class="inline-flex items-center justify-center w-5 h-5 rounded bg-slate-100 border border-slate-200 text-slate-700 font-bold text-[11px] shrink-0">
+                                ${String.fromCharCode(65 + q.correcta)}
+                            </span>
+                            <span class="text-xs text-slate-800 font-medium leading-tight">
+                                ${opcionCorrectaTexto}
+                            </span>
+                            <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0 ml-auto" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                    </td>
+                    <td class="px-3 py-3">
+                        <span class="inline-flex items-center gap-1.5 text-xs text-slate-600 font-normal">
+                            <span class="w-1.5 h-1.5 rounded-full ${difDot} shrink-0"></span>
+                            ${q.dificultad || 'Media'}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-right whitespace-nowrap">
+                        <!-- Botones de acción sobrios y reales de dashboard SaaS -->
+                        <div class="flex items-center justify-end gap-1.5">
+                            <button onclick="editQuestionById(${q.id})" class="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 rounded-md shadow-xs transition hover:border-slate-300">
+                                <svg class="w-3 h-3 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z" />
+                                </svg>
+                                Editar
+                            </button>
+                            <button onclick="deleteQuestionById(${q.id})" class="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-rose-600 hover:text-rose-700 bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 rounded-md shadow-xs transition">
+                                <svg class="w-3 h-3 text-rose-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                                Eliminar
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function switchTab(tabId) {
+            const viewDashboard = document.getElementById('viewDashboard');
+            const viewCrud = document.getElementById('viewCrud');
+            const viewEstudiantes = document.getElementById('viewEstudiantes');
+            const viewEvaluaciones = document.getElementById('viewEvaluaciones');
+            const viewSync = document.getElementById('viewSync');
+
+            const btnDashboard = document.getElementById('tabBtnDashboard');
+            const btnCrud = document.getElementById('tabBtnCrud');
+            const btnEstudiantes = document.getElementById('tabBtnEstudiantes');
+            const btnEvaluaciones = document.getElementById('tabBtnEvaluaciones');
+            const btnSync = document.getElementById('tabBtnSync');
+
+            const inactiveClass = "px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-200/50 transition-all flex items-center gap-1.5 whitespace-nowrap";
+            const activeClass = "px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all shadow-sm bg-white text-blue-700 border border-slate-200/70 flex items-center gap-1.5 whitespace-nowrap";
+
+            [btnDashboard, btnCrud, btnEstudiantes, btnEvaluaciones, btnSync].forEach(btn => {
+                if (btn) btn.className = inactiveClass;
+            });
+
+            viewDashboard.classList.add('hidden');
+            viewCrud.classList.add('hidden');
+            if (viewEstudiantes) viewEstudiantes.classList.add('hidden');
+            viewEvaluaciones.classList.add('hidden');
+            viewSync.classList.add('hidden');
+
+            if (tabId === 'dashboard') {
+                viewDashboard.classList.remove('hidden');
+                btnDashboard.className = activeClass;
+            } else if (tabId === 'crud') {
+                viewCrud.classList.remove('hidden');
+                btnCrud.className = activeClass;
+            } else if (tabId === 'estudiantes') {
+                if (viewEstudiantes) viewEstudiantes.classList.remove('hidden');
+                if (btnEstudiantes) btnEstudiantes.className = activeClass;
+                loadEstudiantes();
+            } else if (tabId === 'evaluaciones') {
+                viewEvaluaciones.classList.remove('hidden');
+                btnEvaluaciones.className = activeClass;
+            } else if (tabId === 'sync') {
+                viewSync.classList.remove('hidden');
+                btnSync.className = activeClass;
+            }
+        }
+
+        async function loadEstudiantes() {
+            try {
+                const res = await fetch('/api/estudiantes');
+                estudiantesData = await res.json();
+                renderEstudiantesTable(estudiantesData);
+                
+                const kpiTotal = document.getElementById('kpiTotalAlumnos');
+                const kpiActivos = document.getElementById('kpiAlumnosActivos');
+                const kpiProm = document.getElementById('kpiPromedioAlumnos');
+                const labelCount = document.getElementById('estudiantesCountLabel');
+
+                if (kpiTotal) kpiTotal.textContent = estudiantesData.length;
+                if (kpiActivos) {
+                    const activos = estudiantesData.filter(e => (e.partidas_jugadas || 0) > 0).length;
+                    kpiActivos.textContent = activos;
+                }
+                if (kpiProm) {
+                    if (estudiantesData.length > 0) {
+                        const sum = estudiantesData.reduce((acc, curr) => acc + (curr.promedio_aciertos || 0), 0);
+                        kpiProm.textContent = Math.round(sum / estudiantesData.length) + '%';
+                    } else {
+                        kpiProm.textContent = '0%';
+                    }
+                }
+                if (labelCount) {
+                    labelCount.textContent = 'Total: ' + estudiantesData.length + ' alumno' + (estudiantesData.length === 1 ? '' : 's') + ' registrado' + (estudiantesData.length === 1 ? '' : 's');
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function renderEstudiantesTable(data) {
+            const tbody = document.getElementById('estudiantesTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="px-5 py-8 text-center text-slate-400">No se encontraron estudiantes registrados en la base de datos.</td></tr>';
+                return;
+            }
+
+            data.forEach(e => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/80 transition border-b border-slate-100";
+                
+                const inicial = (e.nombre || 'E').charAt(0).toUpperCase();
+                const tienePartidas = (e.partidas_jugadas || 0) > 0;
+                const badgeColor = tienePartidas 
+                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
+                    : 'bg-slate-100 text-slate-600 border-slate-200';
+                const badgeTexto = tienePartidas ? 'Activo en app' : 'Registrado';
+
+                let badgePuntaje = 'bg-slate-100 text-slate-600';
+                if (e.mejor_puntaje >= 80) badgePuntaje = 'bg-emerald-50 text-emerald-700 border border-emerald-200';
+                else if (e.mejor_puntaje >= 50) badgePuntaje = 'bg-blue-50 text-blue-700 border border-blue-200';
+
+                tr.innerHTML = `
+                    <td class="px-5 py-3">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-full bg-[#0F4C81] text-white flex items-center justify-center font-bold text-xs shadow-xs">
+                                ${inicial}
+                            </div>
+                            <div>
+                                <div class="font-semibold text-slate-900">${e.nombre}</div>
+                                <div class="text-[11px] text-slate-400 font-mono">ID: #${e.id}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-5 py-3 text-slate-700 font-medium">
+                        ${e.correo}
+                    </td>
+                    <td class="px-5 py-3 text-slate-500">
+                        ${e.fecha_registro ? e.fecha_registro.substring(0, 16) : 'Reciente'}
+                    </td>
+                    <td class="px-5 py-3 text-center font-semibold text-slate-800">
+                        ${e.partidas_jugadas || 0}
+                    </td>
+                    <td class="px-5 py-3 text-center">
+                        <span class="inline-block px-2 py-0.5 rounded text-xs font-bold ${badgePuntaje}">
+                            ${e.mejor_puntaje || 0} pts
+                        </span>
+                    </td>
+                    <td class="px-5 py-3 text-center font-semibold ${e.promedio_aciertos >= 70 ? 'text-emerald-600' : 'text-slate-700'}">
+                        ${e.promedio_aciertos || 0}%
+                    </td>
+                    <td class="px-5 py-3 text-right">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold border ${badgeColor}">
+                            <span class="w-1.5 h-1.5 rounded-full ${tienePartidas ? 'bg-emerald-500' : 'bg-slate-400'} shrink-0"></span>
+                            ${badgeTexto}
+                        </span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterEstudiantes() {
+            const query = document.getElementById('searchEstudiantesInput').value.toLowerCase().trim();
+            if (!query) {
+                renderEstudiantesTable(estudiantesData);
+                return;
+            }
+            const filtrados = estudiantesData.filter(e => 
+                (e.nombre && e.nombre.toLowerCase().includes(query)) ||
+                (e.correo && e.correo.toLowerCase().includes(query))
+            );
+            renderEstudiantesTable(filtrados);
+        }
+
+        function filterQuestions() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const categoryId = document.getElementById('categoryCrudFilter').value;
+
+            const filtered = questionsData.filter(q => {
+                const matchCat = categoryId === '' || String(q.categoria_id) === categoryId;
+                const matchQuery = q.texto.toLowerCase().includes(query) || q.explicacion.toLowerCase().includes(query);
+                return matchCat && matchQuery;
+            });
+
+            renderCrudTable(filtered);
+            document.getElementById('crudCountLabel').textContent = `Mostrando ${filtered.length} de ${questionsData.length} reactivos`;
+        }
+
+        function openModalCreate() {
+            document.getElementById('questionForm').reset();
+            document.getElementById('formQuestionId').value = '';
+            document.getElementById('modalTitle').textContent = 'Nueva Pregunta Académica';
+            document.getElementById('questionModal').classList.remove('hidden');
+        }
+
+        function editQuestionById(id) {
+            const item = questionsData.find(q => q.id === id);
+            if (!item) return;
+
+            document.getElementById('formQuestionId').value = item.id;
+            document.getElementById('formCategory').value = item.categoria_id;
+            document.getElementById('formEnunciado').value = item.texto;
+            document.getElementById('formOp1').value = item.opciones[0] || '';
+            document.getElementById('formOp2').value = item.opciones[1] || '';
+            document.getElementById('formOp3').value = item.opciones[2] || '';
+            document.getElementById('formOp4').value = item.opciones[3] || '';
+            document.getElementById('formCorrectOption').value = item.correcta;
+            document.getElementById('formDificultad').value = item.dificultad || 'Media';
+            document.getElementById('formExplicacion').value = item.explicacion;
+
+            document.getElementById('modalTitle').textContent = `Editar Pregunta #${item.id}`;
+            document.getElementById('questionModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('questionModal').classList.add('hidden');
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            const idVal = document.getElementById('formQuestionId').value;
+            const categoria_id = Number(document.getElementById('formCategory').value);
+            const texto = document.getElementById('formEnunciado').value.trim();
+            const op1 = document.getElementById('formOp1').value.trim();
+            const op2 = document.getElementById('formOp2').value.trim();
+            const op3 = document.getElementById('formOp3').value.trim();
+            const op4 = document.getElementById('formOp4').value.trim();
+            const correcta = parseInt(document.getElementById('formCorrectOption').value);
+            const dificultad = document.getElementById('formDificultad').value;
+            const explicacion = document.getElementById('formExplicacion').value.trim();
+
+            const payload = {
+                categoria_id,
+                texto,
+                opciones: [op1, op2, op3, op4],
+                correcta,
+                explicacion,
+                dificultad
+            };
+
+            try {
+                let res;
+                if (idVal) {
+                    res = await fetch(`/api/preguntas/${idVal}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                } else {
+                    res = await fetch('/api/preguntas', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                }
+
+                if (!res.ok) throw new Error('Error al registrar la pregunta');
+
+                showToast(idVal ? `Pregunta #${idVal} actualizada.` : `Nueva pregunta agregada al catálogo.`);
+                closeModal();
+                await loadInitialData();
+
+            } catch (err) {
+                alert(err.message);
+            }
+        }
+
+        async function deleteQuestionById(id) {
+            if (!confirm(`¿Confirma eliminar la pregunta #${id} del catálogo cloud?`)) return;
+
+            try {
+                const res = await fetch(`/api/preguntas/${id}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error('Error al eliminar');
+
+                showToast(`Pregunta #${id} eliminada.`);
+                await loadInitialData();
+            } catch (err) {
+                alert(err.message);
+            }
+        }
+
+        async function limpiarHistorialPartidas() {
+            if (!confirm("¿Desea limpiar todas las partidas de prueba para dejar el historial en 0 y recibir únicamente evaluaciones reales?")) return;
+
+            try {
+                const res = await fetch('/api/partidas/limpiar', { method: 'DELETE' });
+                const data = await res.json();
+                showToast("Historial reseteado a 0. Esperando partidas reales de la app...");
+                await loadPartidas();
+                await loadMetrics();
+            } catch (err) {
+                alert("Error al limpiar historial: " + err.message);
+            }
+        }
+
+        async function simularPartidaEstudiante() {
+            try {
+                const res = await fetch('/api/partidas/simular', { method: 'POST' });
+                const data = await res.json();
+                
+                showToast(`Partida de ${data.partida.usuario_nombre} (${data.partida.puntaje} pts) sincronizada.`);
+                
+                document.getElementById('lastCommitTime').textContent = `Commit: ${new Date().toLocaleTimeString()}`;
+
+                await loadPartidas();
+                await loadMetrics();
+
+            } catch (err) {
+                console.error("Error al simular:", err);
+            }
+        }
+
+        // Auto-refresco en vivo cada 6 segundos para detectar partidas del celular automáticamente
+        setInterval(() => {
+            loadPartidas();
+            loadEstudiantes();
+            loadMetrics();
+        }, 6000);
+
+        function descargarReporteCSV() {
+            window.location.href = '/api/reporte/exportar';
+            showToast("Descargando reporte docente consolidado...");
+        }
+
+        function copiarAlPortapapeles(elemId) {
+            const texto = document.getElementById(elemId).innerText;
+            navigator.clipboard.writeText(texto).then(() => {
+                showToast("JSON copiado al portapapeles.");
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
