@@ -151,7 +151,7 @@
                     Base de Datos SQLite Conectada
                 </span>
                 <span class="text-slate-300">•</span>
-                <span class="font-mono text-[11px] text-slate-500">http://localhost:3000/api/</span>
+                <span id="apiEndpointBadge" class="font-mono text-[11px] text-slate-500">https://skillquiz-lqej.onrender.com/api/</span>
             </div>
 
             <div class="flex items-center gap-2 flex-wrap">
@@ -702,6 +702,10 @@
         let scoreDistributionChartInstance = null;
 
         window.onload = async function() {
+            const apiBadge = document.getElementById('apiEndpointBadge');
+            if (apiBadge) {
+                apiBadge.textContent = window.location.origin + '/api/';
+            }
             await loadInitialData();
         };
 
