@@ -73,10 +73,11 @@ class RankingActivity : AppCompatActivity() {
         btnLimpiarHistorial.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Borrar historial local")
-                .setMessage("¿Deseas eliminar todas las partidas guardadas en SQLite de este dispositivo?")
+                .setMessage("¿Deseas eliminar todas las partidas guardadas en este dispositivo?")
                 .setPositiveButton("Eliminar") { _, _ ->
-                    dbHelper.limpiarHistorial()
-                    Toast.makeText(this, "Historial eliminado de SQLite", Toast.LENGTH_SHORT).show()
+                    helper.limpiarHistorialCompleto()
+                    getSharedPreferences("SkillQuizRevision", MODE_PRIVATE).edit().clear().apply()
+                    Toast.makeText(this, "Historial local eliminado definitivamente", Toast.LENGTH_SHORT).show()
                     mostrarEstadisticasGenerales()
                     mostrarPartidasLocales()
                 }

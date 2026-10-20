@@ -333,6 +333,23 @@ app.post('/api/partidas', (req, res) => {
             }
         }
 
+        // Evitar inserción de partidas duplicadas idénticas (mismo usuario, puntaje y fecha reciente)
+        const dupCheck = db.prepare(`
+            SELECT id FROM partidas 
+            WHERE LOWER(usuario_nombre) = ? AND LOWER(correo) = ? AND puntaje = ? AND correctas = ? AND total_preguntas = ?
+            AND datetime(fecha) >= datetime('now', '-30 seconds')
+        `).get(userName.toLowerCase(), userEmail, pts, c, t);
+
+        if (dupCheck) {
+            return res.status(200).json({
+                success: true,
+                mensaje: 'Partida ya registrada previamente',
+                partida_id: dupCheck.id,
+                puntaje: pts,
+                porcentaje: porc
+            });
+        }
+
         const stmt = db.prepare(`
             INSERT INTO partidas (usuario_nombre, correo, puntaje, correctas, incorrectas, total_preguntas, porcentaje)
             VALUES (?, ?, ?, ?, ?, ?, ?)

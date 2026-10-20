@@ -120,16 +120,13 @@ class PuntajesHelper(private val context: Context) {
 
     fun obtenerResultados(): List<Resultado> {
         val partidasSqlite = dbHelper.obtenerPartidas()
-        if (partidasSqlite.isNotEmpty()) {
-            return partidasSqlite.map {
-                Resultado(
-                    nombre = it.usuarioNombre,
-                    correctas = it.correctas,
-                    total = it.total
-                )
-            }
+        return partidasSqlite.map {
+            Resultado(
+                nombre = it.usuarioNombre,
+                correctas = it.correctas,
+                total = it.total
+            )
         }
-        return obtenerResultadosDePreferencias()
     }
 
     fun obtenerUltimoResultado(): Resultado? {
@@ -146,6 +143,14 @@ class PuntajesHelper(private val context: Context) {
 
     fun obtenerEstadisticas(): Estadisticas {
         return dbHelper.obtenerEstadisticas()
+    }
+
+    fun limpiarHistorialCompleto() {
+        dbHelper.limpiarHistorial()
+        preferencias.edit()
+            .remove("historial")
+            .putBoolean("migracion_completada", true)
+            .apply()
     }
 
     private fun guardarEnPreferencias(nombre: String, correctas: Int, total: Int) {
@@ -182,6 +187,9 @@ class PuntajesHelper(private val context: Context) {
     }
 
     private fun migrarDesdePreferenciasSiEsNecesario() {
+        val yaMigrado = preferencias.getBoolean("migracion_completada", false)
+        if (yaMigrado) return
+
         val partidasSqlite = dbHelper.obtenerPartidas()
         if (partidasSqlite.isEmpty()) {
             val partidasPref = obtenerResultadosDePreferencias()
@@ -195,9 +203,13 @@ class PuntajesHelper(private val context: Context) {
                     incorrectas = it.total - it.correctas,
                     total = it.total,
                     porcentaje = porcentaje,
-                    sincronizado = false
+                    sincronizado = true
                 )
             }
         }
+        preferencias.edit()
+            .remove("historial")
+            .putBoolean("migracion_completada", true)
+            .apply()
     }
 }
