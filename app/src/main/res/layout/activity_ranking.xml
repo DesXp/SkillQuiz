@@ -70,7 +70,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cada respuesta correcta suma 1 punto."
+                android:text="Cada respuesta correcta suma 10 puntos."
                 android:textSize="14sp"
                 android:textColor="#E3ECFA"
                 android:layout_marginTop="8dp" />

@@ -134,7 +134,7 @@ class PuntajesHelper(private val context: Context) {
     }
 
     fun obtenerPuntosAcumulados(): Int {
-        return obtenerResultados().sumOf { it.correctas }
+        return obtenerResultados().sumOf { it.correctas * 10 }
     }
 
     fun obtenerPartidasJugadas(): Int {

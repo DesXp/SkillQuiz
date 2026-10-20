@@ -161,7 +161,7 @@ class RankingActivity : AppCompatActivity() {
         val acumulados = IntArray(partidasSqlite.size)
         var suma = 0
         partidasSqlite.forEachIndexed { i, p ->
-            suma += p.correctas
+            suma += p.puntaje
             acumulados[i] = suma
         }
 

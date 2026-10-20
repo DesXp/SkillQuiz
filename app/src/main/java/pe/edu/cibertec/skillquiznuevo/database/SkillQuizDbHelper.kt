@@ -232,19 +232,20 @@ class SkillQuizDbHelper(context: Context) : SQLiteOpenHelper(
 
     fun obtenerEstadisticas(correo: String? = null): PuntajesHelper.Estadisticas {
         val partidas = obtenerPartidas(correo)
-        val puntos = partidas.sumOf { it.correctas }
+        val puntos = partidas.sumOf { it.puntaje }
+        val respuestasCorrectas = partidas.sumOf { it.correctas }
         val totalPreguntas = partidas.sumOf { it.total }
         val mejor = partidas.maxWithOrNull(
-            compareBy<PartidaLocal> { it.porcentaje }.thenBy { it.correctas }
+            compareBy<PartidaLocal> { it.porcentaje }.thenBy { it.puntaje }
         )
-        val promedio = if (totalPreguntas > 0) puntos * 100 / totalPreguntas else 0
+        val promedio = if (totalPreguntas > 0) respuestasCorrectas * 100 / totalPreguntas else 0
 
         return PuntajesHelper.Estadisticas(
             puntos = puntos,
             partidas = partidas.size,
-            mejorPuntaje = mejor?.correctas ?: 0,
-            mejorTotal = mejor?.total ?: 10,
-            respuestasCorrectas = puntos,
+            mejorPuntaje = mejor?.puntaje ?: 0,
+            mejorTotal = (mejor?.total ?: 10) * 10,
+            respuestasCorrectas = respuestasCorrectas,
             preguntasRespondidas = totalPreguntas,
             promedio = promedio
         )
